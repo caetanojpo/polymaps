@@ -41,7 +41,7 @@ export class User{
             throw new ValidateLocationException("Either address or coordinates must be provided.");
         }
     }
-    // ✅ Getters (Read-Only Fields)
+
     get id(): string | undefined {
         return this._id;
     }
