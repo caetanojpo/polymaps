@@ -1,8 +1,5 @@
 export class ValidateLocationException extends Error {
-    constructor(entity: string, id?: string | number) {
-        const message = id
-            ? `${entity} with ID ${id} not found.`
-            : `${entity} not found.`;
+    constructor(message: string) {
         super(message);
         this.name = 'ValidateLocationException';
         Object.setPrototypeOf(this, ValidateLocationException.prototype);
