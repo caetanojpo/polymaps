@@ -1,6 +1,6 @@
 import {logger} from "./config/logger";
 import {Application} from "express";
-import MongoConnection from "./infrastructure/database/mongoose/mongo.connection";
+import MongoConnection from "./infrastructure/database/mongo.connection";
 
 class Server {
     private app: Application;

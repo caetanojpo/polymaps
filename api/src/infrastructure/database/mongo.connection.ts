@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import {ENV} from "../../../config/env";
-import {logger} from "../../../config/logger";
+import {ENV} from "../../config/env";
+import {logger} from "../../config/logger";
 
 class MongoConnection {
     private readonly uri: string;
