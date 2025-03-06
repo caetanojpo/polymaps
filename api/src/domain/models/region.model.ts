@@ -7,12 +7,25 @@ export class Region {
     private _name: string;
     private readonly _coordinates: Coordinates[];
     private _user: User;
+    private _isActive: boolean;
+    private readonly _createdAt: Date;
+    private _updatedAt: Date;
 
-    constructor(id: string, name: string, coordinates: Coordinates[], user: User) {
+    constructor(
+        id: string,
+        name: string,
+        coordinates: Coordinates[],
+        user: User,
+        isActive = true,
+        createdAt = new Date(),
+        updatedAt = new Date()) {
         this._id = id;
         this._name = name;
         this._coordinates = coordinates ?? [];
         this._user = user;
+        this._isActive = isActive;
+        this._createdAt = createdAt;
+        this._updatedAt = updatedAt;
     }
 
     get id(): string {
@@ -31,12 +44,32 @@ export class Region {
         return this._user;
     }
 
+    get isActive(): boolean {
+        return this._isActive;
+    }
+
+    get createdAt(): Date {
+        return this._createdAt;
+    }
+
+    get updatedAt(): Date {
+        return this._updatedAt;
+    }
+
     set name(value: string) {
         this._name = value;
     }
 
     set user(value: User) {
         this._user = value;
+    }
+
+    set isActive(value: boolean) {
+        this._isActive = value;
+    }
+
+    set updatedAt(value: Date) {
+        this._updatedAt = value;
     }
 
     public addCoordinates(coordinate: Coordinates): void {
