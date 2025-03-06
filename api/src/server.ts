@@ -1,64 +1,65 @@
-import * as app from 'express';
-import { UserModel } from './models';
+import {logger} from "./config/logger";
+import {Application} from "express";
+import MongoConnection from "./infrastructure/database/mongoose/mongo.connection";
 
-const server = app();
-const router = app.Router();
+class Server {
+    private app: Application;
+    private readonly port: string;
+    private database: MongoConnection;
 
-const STATUS = {
-  OK: 200,
-  CREATED: 201,
-  UPDATED: 201,
-  NOT_FOUND: 400,
-  BAD_REQUEST: 400,
-  INTERNAL_SERVER_ERROR: 500,
-  DEFAULT_ERROR: 418,
-};
+    constructor(app: Application, port: string) {
+        this.app = app;
+        this.port = port;
+        this.database = new MongoConnection();
+    }
 
-router.get('/user', async (req, res) => {
-  const { page, limit } = req.query;
+    public async start(): Promise<void> {
+        try {
+            await this.database.connect();
+            const server = this.app.listen(this.port, () => {
+                logger.info(`Server running on port ${this.port}`);
+            });
 
-  const [users, total] = await Promise.all([
-    UserModel.find().lean(),
-    UserModel.count(),
-  ]);
+            this.setupGracefulShutdown(server);
+        } catch (error) {
+            logger.error('Failed to start server:', error);
+            process.exit(1);
+        }
+    }
 
-  return res.json({
-    rows: users,
-    page,
-    limit,
-    total,
-  });
-});
+    private setupGracefulShutdown(server: any): void {
+        process.on('SIGTERM', () => this.handleShutdown('SIGTERM', server));
+        process.on('SIGINT', () => this.handleShutdown('SIGINT', server));
 
-router.get('/users/:id', async (req, res) => {
-  const { id } = req.params;
+        process.on('unhandledRejection', (error: Error) => {
+            logger.error(`Unhandled Rejection: ${error}`);
+            this.shutdownApp(server);
+        });
 
-  const user = await UserModel.findOne({ _id: id }).lean();
+        process.on('uncaughtException', (error: Error) => {
+            logger.error(`Uncaught Exception: ${error.message}`);
+            this.shutdownApp(server);
+        });
+    }
 
-  if (!user) {
-    res.status(STATUS.INTERNAL_SERVER_ERROR).json({ message: 'Region not found' });
-  }
+    private handleShutdown(signal: string, server: any): void {
+        logger.info(`Received ${signal}. Shutting down gracefully...`);
 
-  return user;
-});
+        server.close(async () => {
+            logger.info('HTTP server closed');
+            await this.database.shutdown();
+            process.exit(0);
+        });
 
-router.put('/users/:id', async (req, res) => {
-  const { id } = req.params;
-  const { update } = req.body;
+        setTimeout(() => {
+            logger.error('Forcing shutdown due to timeout');
+            process.exit(1);
+        }, 5000);
+    }
 
-  const user = await UserModel.findOne({ _id: id }).lean();
+    private shutdownApp(server: any): void {
+        server.close(() => process.exit(1));
+    }
+}
 
-  if (!user) {
-    res.status(STATUS.DEFAULT_ERROR).json({ message: 'Region not found' });
-  }
-
-  user.name = update.name;
-
-  await user.save();
-
-  return res.sendStatus(201);
-});
-
-server.use(router);
-
-export default server.listen(3003);
+export default Server;
