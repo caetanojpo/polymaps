@@ -46,9 +46,6 @@ export class User{
         return this._id;
     }
 
-    get createdAt(): Date {
-        return this._createdAt;
-    }
 
     get name(): string {
         return this._name;
@@ -72,6 +69,10 @@ export class User{
 
     get isActive(): boolean {
         return this._isActive;
+    }
+
+    get createdAt(): Date {
+        return this._createdAt;
     }
 
     get updatedAt(): Date {
