@@ -2,10 +2,14 @@ import {prop, getModelForClass, pre} from '@typegoose/typegoose';
 import {ValidateLocationException} from "../../../domain/exceptions/validate-location.exception";
 import {Coordinates} from "../../../domain/types/coordinates.type";
 import { BaseSchema} from "./base.schema";
+import mongoose from "mongoose";
 
 
-@pre<UserSchema>('save', async function (next) {
-    if ((this.address && this.coordinates) || (!this.address && !this.coordinates)) {
+pre<UserSchema>("validate", function (this: mongoose.Document & UserSchema, next) {
+    const hasAddress = !!this.address;
+    const hasCoordinates = !!this.coordinates;
+
+    if ((hasAddress && hasCoordinates) || (!hasAddress && !hasCoordinates)) {
         throw new ValidateLocationException("Either address or coordinates must be provided.");
     }
     next();
