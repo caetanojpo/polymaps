@@ -1,11 +1,12 @@
 import {Coordinates} from "../types/coordinates.type";
 import {User} from "./user.model";
 import {CoordinatesException} from "../exceptions/coordinates.exception";
+import {Geometry} from "../types/geometry.type";
 
 export class Region {
     private readonly _id: string;
     private _name: string;
-    private readonly _coordinates: Coordinates[];
+    private readonly _coordinates: Geometry;
     private _user: User;
     private _isActive: boolean;
     private readonly _createdAt: Date;
@@ -14,19 +15,25 @@ export class Region {
     constructor(
         id: string,
         name: string,
-        coordinates: Coordinates[],
+        coordinates: Coordinates[][][],  // Expecting GeoJSON Polygon type
         user: User,
         isActive = true,
         createdAt = new Date(),
-        updatedAt = new Date()) {
+        updatedAt = new Date()
+    ) {
+        if (!coordinates || coordinates.length === 0) {
+            throw new CoordinatesException("Coordinates must be provided.");
+        }
+
         this._id = id;
         this._name = name;
-        this._coordinates = coordinates ?? [];
+        this._coordinates = {type: "Polygon", coordinates};
         this._user = user;
         this._isActive = isActive;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
     }
+
 
     get id(): string {
         return this._id;
@@ -36,12 +43,12 @@ export class Region {
         return this._name;
     }
 
-    get coordinates(): Coordinates[] {
-        return [...this._coordinates];
-    }
-
     get user(): User {
         return this._user;
+    }
+
+    get coordinates(): Geometry {
+        return this._coordinates;
     }
 
     get isActive(): boolean {
@@ -72,21 +79,25 @@ export class Region {
         this._updatedAt = value;
     }
 
-    public addCoordinates(coordinate: Coordinates): void {
-        this._coordinates.push(coordinate);
-    }
+    //THEORETICAL STUFF I MUST TEST LATER
+    // public removeCoordinate(ringIndex: number, coordinateIndex: number): void {
+    //     if (ringIndex < 0 || ringIndex >= this._coordinates.coordinates.length) {
+    //         throw new CoordinatesException("Invalid ring index.");
+    //     }
+    //     if (coordinateIndex < 0 || coordinateIndex >= this._coordinates.coordinates[ringIndex].length) {
+    //         throw new CoordinatesException("Invalid coordinate index.");
+    //     }
+    //     this._coordinates.coordinates[ringIndex].splice(coordinateIndex, 1);
+    // }
+    //
+    // public updateCoordinate(ringIndex: number, coordinateIndex: number, newCoordinate: Coordinates[]): void {
+    //     if (ringIndex < 0 || ringIndex >= this._coordinates.coordinates.length) {
+    //         throw new CoordinatesException("Invalid ring index.");
+    //     }
+    //     if (coordinateIndex < 0 || coordinateIndex >= this._coordinates.coordinates[ringIndex].length) {
+    //         throw new CoordinatesException("Invalid coordinate index.");
+    //     }
+    //     this._coordinates.coordinates[ringIndex][coordinateIndex] = newCoordinate;
+    // }
 
-    public removeCoordinates(index: number): void {
-        if (index < 0 || index >= this._coordinates.length) {
-            throw new CoordinatesException("Invalid index.");
-        }
-        this._coordinates.splice(index, 1);
-    }
-
-    public updateCoordinates(index: number, newCoordinate: Coordinates): void {
-        if (index < 0 || index >= this._coordinates.length) {
-            throw new CoordinatesException("Invalid index.");
-        }
-        this._coordinates[index] = newCoordinate;
-    }
 }
