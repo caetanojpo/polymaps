@@ -27,13 +27,13 @@ const logFormat = winston.format.combine(
         const level = info.level?.toUpperCase() || "INFO";
         const message = info.message || "";
 
-        if (typeof info.stack === "string" && info.stack.includes("\n")) {
-            return `[${timestamp}] ${level}: ${message}\n  ↳ ${info.stack.split("\n")[1].trim()}`;
-        }
+        const metadata: any = Array.isArray(info[Symbol.for('splat')]) ? info[Symbol.for('splat')] : [];
+        const extraData = metadata.length > 0 ? ` | ${JSON.stringify(metadata)}` : "";
 
-        return `[${timestamp}] ${level}: ${message}`;
+        return `[${timestamp}] ${level}: ${message}${extraData}`;
     })
 );
+
 
 const transports = [
     new winston.transports.Console({
