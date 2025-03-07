@@ -35,8 +35,8 @@ export class User {
         this.updatedAt = updatedAt;
     }
 
-    public static validateLocation(address?: string, coordinates?: Coordinates): void {
-        if (!address && !coordinates) {
+    public static validateLocation(address?: string, coordinates?: Coordinates, updateMethod = false): void {
+        if (!updateMethod && (!address && !coordinates)) {
             throw new ValidateLocationException("Either address or coordinates must be provided.");
         }
         if (address && coordinates) {
