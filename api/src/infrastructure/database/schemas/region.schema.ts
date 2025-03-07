@@ -4,15 +4,13 @@ import {BaseSchema} from "./base.schema";
 import {UserSchema} from "./user.schema";
 
 
-@index({ coordinates: "2dsphere" })
+@index({"coordinates.coordinates": "2dsphere"})
 export class RegionSchema extends BaseSchema {
     @prop({required: true})
     public name!: string;
 
-    @prop()
-    public coordinates?: {
-        coordinates: number[][][];
-    };
+    @prop({required: true, type: () => Object})
+    public coordinates!: { type: "Polygon"; coordinates: number[][][] };
 
     @prop({ref: () => UserSchema, required: true, type: () => String})
     user!: Ref<UserSchema>;
