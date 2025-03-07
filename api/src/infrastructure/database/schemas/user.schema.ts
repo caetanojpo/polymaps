@@ -1,20 +1,8 @@
-import {prop, getModelForClass, pre} from '@typegoose/typegoose';
-import {ValidateLocationException} from "../../../domain/exceptions/validate-location.exception";
+import {prop, getModelForClass, modelOptions} from '@typegoose/typegoose';
 import {Coordinates} from "../../../domain/types/coordinates.type";
-import { BaseSchema} from "./base.schema";
-import mongoose from "mongoose";
+import {BaseSchema} from "./base.schema";
 
-
-pre<UserSchema>("validate", function (this: mongoose.Document & UserSchema, next) {
-    const hasAddress = !!this.address;
-    const hasCoordinates = !!this.coordinates;
-
-    if ((hasAddress && hasCoordinates) || (!hasAddress && !hasCoordinates)) {
-        throw new ValidateLocationException("Either address or coordinates must be provided.");
-    }
-    next();
-})
-
+@modelOptions({options: {customName: 'users'}})
 export class UserSchema extends BaseSchema {
     @prop({required: true})
     public name!: string;
@@ -26,19 +14,13 @@ export class UserSchema extends BaseSchema {
     public hashedPassword!: string;
 
     @prop()
-    public address?: string;
+    public address!: string;
 
     @prop()
-    public coordinates?: Coordinates;
+    public coordinates!: Coordinates;
 
     @prop({default: true})
     public isActive!: boolean;
-
-    @prop({default: () => new Date(), immutable: true})
-    public createdAt!: Date;
-
-    @prop({default: () => new Date()})
-    public updatedAt!: Date;
 }
 
 export const UserModel = getModelForClass(UserSchema);

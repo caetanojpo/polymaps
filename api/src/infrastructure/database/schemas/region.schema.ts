@@ -1,9 +1,10 @@
-import {prop, getModelForClass, index, Ref} from '@typegoose/typegoose';
+import {prop, getModelForClass, index, Ref, modelOptions} from '@typegoose/typegoose';
 import {BaseSchema} from "./base.schema";
 import {UserSchema} from "./user.schema";
 
 
 @index({"coordinates.coordinates": "2dsphere"})
+@modelOptions({options: {customName: 'regions'}})
 export class RegionSchema extends BaseSchema {
     @prop({required: true})
     public name!: string;
