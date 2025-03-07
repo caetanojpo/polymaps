@@ -1,7 +1,7 @@
 import {Coordinates} from "../types/coordinates.type";
 import {ValidateLocationException} from "../exceptions/validate-location.exception";
 
-export class User{
+export class User {
     private readonly _id?: string;
     private _name: string;
     private _email: string;
@@ -12,7 +12,7 @@ export class User{
     private readonly _createdAt: Date;
     private _updatedAt: Date;
 
-    private constructor(
+    constructor(
         id: string | undefined,
         name: string,
         email: string,
