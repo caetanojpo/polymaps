@@ -208,6 +208,22 @@
   resolved "https://registry.npmjs.org/@types/mocha/-/mocha-10.0.2.tgz"
   integrity sha512-NaHL0+0lLNhX6d9rs+NSt97WH/gIlRHmszXbQ/8/MV/eVcFNdeJ/GYhrFuUc8K7WuPhRhTSdMkCp8VMzhUq85w==
 
+"@types/node-fetch@^2":
+  version "2.6.12"
+  resolved "https://registry.npmjs.org/@types/node-fetch/-/node-fetch-2.6.12.tgz"
+  integrity sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==
+  dependencies:
+    "@types/node" "*"
+    form-data "^4.0.0"
+
+"@types/node-geocoder@^4.2.6":
+  version "4.2.6"
+  resolved "https://registry.npmjs.org/@types/node-geocoder/-/node-geocoder-4.2.6.tgz"
+  integrity sha512-rONIqFylsxAeyqCpfy626vs9ofNI8oXjNyBS2KuI+ePbCyLGrcqkVSrhIvuKxfeXtqikGk118EZtjehU0cUH9w==
+  dependencies:
+    "@types/node" "*"
+    "@types/node-fetch" "^2"
+
 "@types/node@*", "@types/node@^20.8.0":
   version "20.8.0"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.8.0.tgz"
@@ -417,6 +433,11 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+
+bluebird@^3.5.2:
+  version "3.7.2"
+  resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
 body-parser@1.20.1:
   version "1.20.1"
@@ -1539,12 +1560,20 @@ node-addon-api@^5.0.0:
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-5.1.0.tgz"
   integrity sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==
 
-node-fetch@^2.6.7:
+node-fetch@^2.6.0, node-fetch@^2.6.7:
   version "2.7.0"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.7.0.tgz"
   integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
   dependencies:
     whatwg-url "^5.0.0"
+
+node-geocoder@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.npmjs.org/node-geocoder/-/node-geocoder-4.4.1.tgz"
+  integrity sha512-krx50Gxl4yBgMBhfUhOuNwStzLi+gAYaa46gs0e+ftTvaqLsjKYDFVxC8ff6RLc2f11Gp7Y+R1mkzwsE2c0chw==
+  dependencies:
+    bluebird "^3.5.2"
+    node-fetch "^2.6.0"
 
 nodemon@^3.0.1:
   version "3.0.1"
@@ -1637,6 +1666,7 @@ one-time@^1.0.0:
     express "^4.18.2"
     jsonwebtoken "^9.0.2"
     mongoose "^7.5.3"
+    node-geocoder "^4.4.1"
     oztest "file:"
     winston "^3.17.0"
 
