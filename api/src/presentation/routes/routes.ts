@@ -14,20 +14,16 @@ class Routes {
 
     private configureUserRoutes(): void {
         this.routes.route('/users')
-            .get((req: Request, res: Response) => {
-                res.send("test");
-            })
+            .get(this.userController.findAll.bind(this.userController))
             .post(this.userController.createUser.bind(this.userController));
-        this.routes.route('/user/:id')
-            .get((req: Request, res: Response) => {
-                res.send("test");
-            })
-            .put((req: Request, res: Response) => {
-                res.send("test");
-            })
-            .delete((req: Request, res: Response) => {
-                res.send("test");
-            });
+        this.routes.route('/users/:id')
+            .get(this.userController.findById.bind(this.userController))
+            .put(this.userController.updateUser.bind(this.userController))
+            .delete(this.userController.softDeleteUser.bind(this.userController))
+        this.routes.route('/users/email/:email')
+            .get(this.userController.findByEmail.bind(this.userController))
+        this.routes.route('/users/delete/:id')
+            .delete(this.userController.hardDeleteUser.bind(this.userController))
     }
 
     private configureRegionRoutes(): void {
