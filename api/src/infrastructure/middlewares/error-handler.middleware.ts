@@ -13,27 +13,22 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
     switch (error.name) {
         case "ValidateLocationException":
             statusCode = STATUS_CODE.BAD_REQUEST;
-            message = "Validation error occurred";
             code = "VALIDATION_ERROR";
             break;
         case "UserException":
             statusCode = STATUS_CODE.BAD_REQUEST;
-            message = "User error occurred";
             code = "USER_ERROR";
             break;
         case "EntityNotFoundException":
             statusCode = STATUS_CODE.NOT_FOUND;
-            message = "Entity not found error occurred";
             code = "ENTITY_NOT_FOUND_ERROR";
             break;
         case "DatabaseException":
             statusCode = STATUS_CODE.INTERNAL_SERVER_ERROR;
-            message = "Database error occurred";
             code = "DATABASE_ERROR";
             break;
         case "CoordinatesException":
             statusCode = STATUS_CODE.BAD_REQUEST;
-            message = "Coordinates error occurred";
             code = "COORDINATES_ERROR";
             break;
         default:
