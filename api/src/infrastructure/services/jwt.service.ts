@@ -15,7 +15,7 @@ export class JwtService {
     }
 
     generateToken(userId: string): string {
-        return sign({ userId }, this.secretKey, { expiresIn: '1h' });
+        return sign({ userId }, this.secretKey, { expiresIn: '10m' });
     }
 
     verifyToken(token: string): any {
