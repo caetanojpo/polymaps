@@ -1,6 +1,7 @@
 import {Request, Response, Router} from 'express';
 import {UserController} from "../controllers/user.controller";
 import {AuthController} from "../controllers/auth.controller";
+import {authMiddleware} from "../../infrastructure/middlewares/auth.middleware";
 
 class Routes {
     public routes: Router;
@@ -18,16 +19,16 @@ class Routes {
 
     private configureUserRoutes(): void {
         this.routes.route('/users')
-            .get(this.userController.findAll.bind(this.userController))
+            .get(authMiddleware, this.userController.findAll.bind(this.userController))
             .post(this.userController.createUser.bind(this.userController));
         this.routes.route('/users/:id')
-            .get(this.userController.findById.bind(this.userController))
-            .put(this.userController.updateUser.bind(this.userController))
-            .delete(this.userController.softDeleteUser.bind(this.userController))
+            .get(authMiddleware, this.userController.findById.bind(this.userController))
+            .put(authMiddleware, this.userController.updateUser.bind(this.userController))
+            .delete(authMiddleware, this.userController.softDeleteUser.bind(this.userController))
         this.routes.route('/users/email/:email')
-            .get(this.userController.findByEmail.bind(this.userController))
+            .get(authMiddleware, this.userController.findByEmail.bind(this.userController))
         this.routes.route('/users/delete/:id')
-            .delete(this.userController.hardDeleteUser.bind(this.userController))
+            .delete(authMiddleware, this.userController.hardDeleteUser.bind(this.userController))
     }
 
     private configureAuthRoutes(): void {
