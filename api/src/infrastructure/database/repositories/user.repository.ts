@@ -41,6 +41,17 @@ export class UserRepository implements IUserRepository {
         }
     }
 
+    public async findAll(): Promise<User[]> {
+        try {
+            const users = await this.collection.find().lean().exec();
+            return users.map((user) => UserMapper.toDomainFromSchema(user));
+        } catch (error) {
+            throw new DatabaseException(
+                `MongoDB error when trying to fetch all users - ` + error
+            );
+        }
+    }
+
     public async save(user: User): Promise<User> {
         try {
             const userDocument = new this.collection(UserMapper.toSchemaFromDomain(user));
@@ -69,13 +80,9 @@ export class UserRepository implements IUserRepository {
         }
     }
 
-    public async delete(id: string): Promise<boolean> {
+    public async delete(id: string): Promise<void> {
         try {
-            const exists = await this.collection.exists({_id: id}).exec();
-            if (!exists) return false;
-
             await this.collection.findByIdAndDelete(id).exec();
-            return true;
         } catch (error) {
             throw new DatabaseException(
                 `Error deleting user with id: ${id} - ` + error
