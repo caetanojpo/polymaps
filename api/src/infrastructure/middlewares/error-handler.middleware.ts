@@ -1,42 +1,54 @@
 import {Request, Response, NextFunction} from "express";
 import {logger} from "../../config/logger";
 import {ENV} from "../../config/env";
-import STATUS_CODE from "../../utils/status-code.utils";
+import STATUS_CODE from "../../utils/status-code";
+import {ApiResponse} from "../../utils/api-response";
 
 export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
-    let {statusCode, message} = error;
+    let {statusCode, message, code} = error;
 
-    logger.info("passou aqui")
-    if (!statusCode) {
-        statusCode = STATUS_CODE.INTERNAL_SERVER_ERROR;
+    statusCode = statusCode || STATUS_CODE.INTERNAL_SERVER_ERROR;
+    message = message || 'Internal Server Error';
+
+    switch (error.name) {
+        case "ValidateLocationException":
+            statusCode = STATUS_CODE.BAD_REQUEST;
+            message = "Validation error occurred";
+            code = "VALIDATION_ERROR";
+            break;
+        case "UserException":
+            statusCode = STATUS_CODE.BAD_REQUEST;
+            message = "User error occurred";
+            code = "USER_ERROR";
+            break;
+        case "EntityNotFoundException":
+            statusCode = STATUS_CODE.NOT_FOUND;
+            message = "Entity not found error occurred";
+            code = "ENTITY_NOT_FOUND_ERROR";
+            break;
+        case "DatabaseException":
+            statusCode = STATUS_CODE.INTERNAL_SERVER_ERROR;
+            message = "Database error occurred";
+            code = "DATABASE_ERROR";
+            break;
+        case "CoordinatesException":
+            statusCode = STATUS_CODE.BAD_REQUEST;
+            message = "Coordinates error occurred";
+            code = "COORDINATES_ERROR";
+            break;
+        default:
+            code = code || error.errorCode || "UNKNOWN_ERROR";
     }
 
-    if (!error.isOperational) {
-        message = message || 'Internal Server Error';
-    }
+    logger.error(`Error: ${message}`, {
+        statusCode,
+        url: req.originalUrl,
+        method: req.method,
+        body: req.body,
+        errorCode: code,
+    });
 
-    if (error.name === 'ValidationError') {
-        statusCode = STATUS_CODE.BAD_REQUEST;
-        message = 'Validation error occurred';
-    }
+    res.status(statusCode).json(ApiResponse.error(message, code, ENV.NODE_ENV === "dev" ? error.stack : undefined));
 
-    const responsePayload = {
-        status: 'error',
-        message,
-        errorCode: error.code || 'UNKNOWN_ERROR',
-        ...(ENV.NODE_ENV === 'dev' && {stack: error.stack})
-    };
-
-    if (error.isOperational) {
-        logger.error({
-            message: error.message,
-            stack: error.stack,
-            statusCode: statusCode,
-            url: req.originalUrl,
-            method: req.method,
-            body: req.body,
-        });
-    }
-
-    res.status(statusCode).json(responsePayload);
+    return;
 };

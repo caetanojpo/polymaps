@@ -3,7 +3,7 @@ import cors from "cors";
 import {logger} from "./config/logger";
 import routes from "./presentation/routes/routes";
 import {errorHandler} from "./infrastructure/middlewares/error-handler.middleware";
-import STATUS_CODE from "./utils/status-code.utils";
+import STATUS_CODE from "./utils/status-code";
 
 class App {
     public app: Application;
@@ -38,20 +38,16 @@ class App {
     }
 
     private configureErrorHandling(): void {
-        this.app.use(errorHandler);
 
-        this.app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
-            logger.error(`Internal Server Error: ${err.message}`);
-            res.status(500).json({
-                error: 'Internal Server Error',
-                message: err.message,
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            logger.error(`Route not found: ${req.method} ${req.originalUrl}`);
+            next({
+                statusCode: STATUS_CODE.NOT_FOUND,
+                message: `Route ${req.method} ${req.originalUrl} not found`,
             });
         });
 
-        this.app.use((req: Request, res: Response, next: NextFunction): void => {
-            logger.logFormatted("error", "Route {} not found.", req.originalUrl);
-            res.status(STATUS_CODE.NOT_FOUND).send(`Route ${req.method} ${req.originalUrl} not found`);
-        });
+        this.app.use(errorHandler);
     }
 }
 
