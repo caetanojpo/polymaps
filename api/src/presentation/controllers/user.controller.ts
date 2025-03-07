@@ -8,13 +8,15 @@ import {validate} from "class-validator";
 import {NextFunction, Request, Response} from "express";
 import {User} from "../../domain/models/user.model";
 import {ApiResponse} from "../../utils/api-response";
+import {AuthUseCase} from "../../application/use-cases/auth/auth.use-case";
 
 export class UserController {
     private create: CreateUserUseCase;
 
     constructor() {
         const userRepository = UserRepository.getInstance();
-        this.create = new CreateUserUseCase(userRepository);
+        const auth = new AuthUseCase(userRepository);
+        this.create = new CreateUserUseCase(userRepository, auth);
     }
 
     public async createUser(req: Request, res: Response, next: NextFunction): Promise<any> {
