@@ -1,5 +1,4 @@
 import {prop, getModelForClass, index, Ref} from '@typegoose/typegoose';
-import {Coordinates} from "../../../domain/types/coordinates.type";
 import {BaseSchema} from "./base.schema";
 import {UserSchema} from "./user.schema";
 
