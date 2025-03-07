@@ -1,10 +1,13 @@
 import {Request, Response, Router} from 'express';
+import {UserController} from "../controllers/user.controller";
 
 class Routes {
     public routes: Router;
+    private readonly userController: UserController;
 
     constructor() {
         this.routes = Router();
+        this.userController = new UserController();
         this.configureUserRoutes();
         this.configureRegionRoutes();
     }
@@ -14,9 +17,7 @@ class Routes {
             .get((req: Request, res: Response) => {
                 res.send("test");
             })
-            .post((req: Request, res: Response) => {
-                res.send("test");
-            });
+            .post(this.userController.createUser.bind(this.userController));
         this.routes.route('/user/:id')
             .get((req: Request, res: Response) => {
                 res.send("test");
