@@ -17,12 +17,11 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
         const decoded = await jwtService.verifyToken(token);
         const {userId} = decoded;
         if (!userId) {
-            logger.error( "Invalid token");
+            logger.error("Invalid token");
             return res.status(401).json({message: 'Invalid token'});
         }
 
         const userFound = await repository.findById(userId);
-
         if (!userFound?.isActive) {
             logger.error("Invalid token");
             return res.status(401).json({message: 'Invalid token'});
