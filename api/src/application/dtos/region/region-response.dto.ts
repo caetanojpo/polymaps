@@ -1,22 +1,19 @@
-import { Expose } from "class-transformer";
-import { User } from "../../../domain/models/user.model";
-import { Geometry } from "../../../domain/types/geometry.type";
+import {Expose} from "class-transformer";
+import {UserResponseDTO} from "../users/user-response.dto";
+import {Geometry} from "../../../domain/models/geometry.model";
 
 export class RegionResponseDTO {
     @Expose()
-    _id?: string;
+    public readonly _id?: string;
 
     @Expose()
     name: string;
 
     @Expose()
-    coordinates: [[[number]]];
+    location: Geometry;
 
     @Expose()
-    owner: User;
-
-    @Expose()
-    isActive?: boolean;
+    owner: UserResponseDTO;
 
     @Expose()
     createdAt?: Date;
@@ -27,17 +24,15 @@ export class RegionResponseDTO {
     constructor(
         id: string,
         name: string,
-        coordinates: [[[number]]],
-        owner: User,
-        isActive: boolean,
+        location: Geometry,
+        owner: UserResponseDTO,
         createdAt: Date,
         updatedAt: Date
     ) {
         this._id = id;
         this.name = name;
-        this.coordinates = coordinates;
+        this.location = location;
         this.owner = owner;
-        this.isActive = isActive;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

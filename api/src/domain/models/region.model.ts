@@ -1,7 +1,7 @@
 import {Coordinates} from "../types/coordinates.type";
 import {User} from "./user.model";
-import {Geometry} from "../types/geometry.type";
 import {Expose} from "class-transformer";
+import {Geometry} from "./geometry.model";
 
 export class Region {
     @Expose()
