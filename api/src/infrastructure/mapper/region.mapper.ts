@@ -1,7 +1,9 @@
-
 import {plainToInstance} from "class-transformer";
 import {Region} from "../../domain/models/region.model";
 import {RegionSchema} from "../database/schemas/region.schema";
+import {CreateRegionDto} from "../../application/dtos/region/create-region.dto";
+import {UpdateRegionDto} from "../../application/dtos/region/update-region.dto";
+import {RegionResponseDTO} from "../../application/dtos/region/region-response.dto";
 
 export class RegionMapper {
     static toSchemaFromDomain(region: Region): RegionSchema {
@@ -10,5 +12,17 @@ export class RegionMapper {
 
     static toDomainFromSchema(regionSchema: RegionSchema): Region {
         return plainToInstance(Region, regionSchema, {excludeExtraneousValues: true});
+    }
+
+    static toDomainFromCreateRegionDTO(createRegionDto: CreateRegionDto): Region {
+        return plainToInstance(Region, createRegionDto);
+    }
+
+    static toDomainFromUpdateUserDTO(updateRegionDto: UpdateRegionDto): Region {
+        return plainToInstance(Region, updateRegionDto);
+    }
+
+    static toRegionResponseFromDomain(region: Region): RegionResponseDTO {
+        return plainToInstance(RegionResponseDTO, region, {excludeExtraneousValues: true});
     }
 }
