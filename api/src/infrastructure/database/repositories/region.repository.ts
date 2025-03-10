@@ -46,7 +46,7 @@ export class RegionRepository implements IRegionRepository {
         }
     }
 
-    public async findAllByCoordinates(coordinates: Coordinates): Promise<Region[]> {
+    public async findRegionsContainingPoint(coordinates: Coordinates): Promise<Region[]> {
         try {
             const point = {
                 type: "Point",
@@ -54,7 +54,7 @@ export class RegionRepository implements IRegionRepository {
             };
 
             const regions = await this.collection.find({
-                "coordinates.coordinates": {
+                "location.coordinates": {
                     $geoIntersects: {$geometry: point}
                 }
             }).exec();
@@ -62,12 +62,12 @@ export class RegionRepository implements IRegionRepository {
             return regions.map((region) => RegionMapper.toDomainFromSchema(region));
         } catch (error) {
             throw new DatabaseException(
-                `MongoDB error when trying to list all regions by coordinates: ${JSON.stringify(coordinates)} - ` + error
+                `MongoDB error when trying to list regions containing the point: ${JSON.stringify(coordinates)} - ` + error
             );
         }
     }
 
-    public async findAllNearCoordinates(coordinates: Coordinates, ownerId?: string): Promise<Region[]> {
+    public async findRegionsNearPoint(coordinates: Coordinates, maxDistance: number, ownerId?: string): Promise<Region[]> {
         try {
             const point = {
                 type: "Point",
@@ -75,10 +75,10 @@ export class RegionRepository implements IRegionRepository {
             };
 
             const query: any = {
-                "coordinates.coordinates": {
+                "location.coordinates": {
                     $near: {
                         $geometry: point,
-                        $maxDistance: 10000, //10km
+                        $maxDistance: maxDistance,
                     }
                 }
             };
@@ -92,7 +92,7 @@ export class RegionRepository implements IRegionRepository {
             return regions.map((region) => RegionMapper.toDomainFromSchema(region));
         } catch (error) {
             throw new DatabaseException(
-                `MongoDB error when trying to list all regions near the coordinates: ${JSON.stringify(coordinates)} - ` + error
+                `MongoDB error when trying to list regions near the point: ${JSON.stringify(coordinates)} - ` + error
             );
         }
     }

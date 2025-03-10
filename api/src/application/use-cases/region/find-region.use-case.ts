@@ -24,10 +24,10 @@ export class FindRegionUseCase {
     }
 
     public async executeAllByCoordinates(coordinates: Coordinates): Promise<Region[]> {
-        return await this.repository.findAllByCoordinates(coordinates);
+        return await this.repository.findRegionsContainingPoint(coordinates);
     }
 
-    public async executeAllNearCoordinates(coordinates: Coordinates, ownerId?: string): Promise<Region[]> {
-        return await this.repository.findAllNearCoordinates(coordinates, ownerId);
+    public async executeAllNearCoordinates(coordinates: Coordinates, maxDistance: number, ownerId?: string): Promise<Region[]> {
+        return await this.repository.findRegionsNearPoint(coordinates, maxDistance, ownerId);
     }
 }

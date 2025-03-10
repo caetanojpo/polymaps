@@ -6,9 +6,9 @@ export interface IRegionRepository {
 
     findAll(ownerId?: string): Promise<Region[]>;
 
-    findAllByCoordinates(coordinates: Coordinates): Promise<Region[]>;
+    findRegionsContainingPoint(coordinates: Coordinates): Promise<Region[]>;
 
-    findAllNearCoordinates(coordinates: Coordinates, ownerId?: string): Promise<Region[]>;
+    findRegionsNearPoint(coordinates: Coordinates, maxDistance: number, ownerId?: string): Promise<Region[]>;
 
     save(region: Region): Promise<Region>;
 
