@@ -3,7 +3,7 @@ import {Expose} from "class-transformer";
 
 export class UserResponseDTO {
     @Expose()
-    _id: string;
+    public readonly _id?: string;
     @Expose()
     name: string;
     @Expose()
@@ -16,7 +16,6 @@ export class UserResponseDTO {
     createdAt?: Date;
     @Expose()
     updatedAt?: Date;
-
 
     constructor(id: string, name: string, email: string, address: string, coordinates: Coordinates, createdAt: Date, updatedAt: Date) {
         this._id = id;
