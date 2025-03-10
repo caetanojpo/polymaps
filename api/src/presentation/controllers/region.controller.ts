@@ -49,7 +49,7 @@ export class RegionController {
 
     public async findById(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            const id = req.params.region;
+            const id = req.params.id;
             const region = await this.find.executeById(id);
 
             const mappedRegion = RegionMapper.toRegionResponseFromDomain(region!);
@@ -109,7 +109,7 @@ export class RegionController {
 
     public async updateRegion(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            const id = req.params.regionId
+            const id = req.params.id
             const regionData = plainToInstance(UpdateRegionDto, req.body as Object);
 
             const hasErrors = await this.validateErrors(regionData, res);
