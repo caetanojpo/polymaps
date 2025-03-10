@@ -13,6 +13,7 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+      - ./initdb.mongo.js:/docker-entrypoint-initdb.d/initdb.mongo.js
 
 volumes:
   mongodb_data:
