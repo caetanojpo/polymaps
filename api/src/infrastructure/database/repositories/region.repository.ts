@@ -49,15 +49,14 @@ export class RegionRepository implements IRegionRepository {
         try {
             const point = {
                 type: "Point",
-                coordinates: [coordinates.longitude, coordinates.latitude],
+                coordinates: [coordinates.latitude, coordinates.longitude],
             };
 
             const regions = await this.collection.find({
-                "location.coordinates": {
+                "location": {
                     $geoIntersects: {$geometry: point}
                 }
             }).exec();
-
             return regions.map((region) => RegionMapper.toDomainFromSchema(region));
         } catch (error) {
             throw new DatabaseException(
@@ -70,11 +69,11 @@ export class RegionRepository implements IRegionRepository {
         try {
             const point = {
                 type: "Point",
-                coordinates: [coordinates.longitude, coordinates.latitude],
+                coordinates: [coordinates.latitude, coordinates.longitude],
             };
 
             const query: any = {
-                "location.coordinates": {
+                "location": {
                     $near: {
                         $geometry: point,
                         $maxDistance: maxDistance,

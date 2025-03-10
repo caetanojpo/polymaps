@@ -82,7 +82,11 @@ export class RegionController {
             const regions = await this.find.executeRegionsContainingPoint(coordinates);
             const mappedRegions = regions.map(region => RegionMapper.toRegionResponseFromDomain(region!));
 
-            return res.status(STATUS_CODE.OK).json(ApiResponse.success("Regions containing the point", mappedRegions));
+            return res.status(STATUS_CODE.OK).json(ApiResponse.success("Regions containing the point", {
+                regionsCount: regions.length,
+                sharedPoint: regionData,
+                regions: mappedRegions
+            }));
         } catch (error) {
             next(error);
         }
@@ -101,7 +105,13 @@ export class RegionController {
 
             const mappedRegions = regions.map(region => RegionMapper.toRegionResponseFromDomain(region!));
 
-            return res.status(STATUS_CODE.OK).json(ApiResponse.success("Regions near the point", mappedRegions));
+            return res.status(STATUS_CODE.OK).json(ApiResponse.success("Regions near the point", {
+                regionsCount: regions.length,
+                basePoint: regionData,
+                distance: maxDistance,
+                onlyOwnerRegions: !!ownerId,
+                regions: mappedRegions
+            }));
         } catch (error) {
             next(error);
         }
