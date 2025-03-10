@@ -119,39 +119,25 @@ export class UserController {
 
             logger.info(`User updated successfully with ID: ${updatedUser?._id}`);
 
-            return res.status(STATUS_CODE.NO_CONTENT).json(
-                ApiResponse.success("User updated successfully", {id: updatedUser?._id})
-            );
+            return res.status(STATUS_CODE.NO_CONTENT);
         } catch (error) {
             next(error);
         }
     }
 
-    public async softDeleteUser(req: Request, res: Response, next: NextFunction): Promise<any> {
+    public async deleteUser(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("User soft delete process started");
             const id = req.params.id;
-            await this.delete.execute(id);
-            logger.info(`User soft deleted successfully with ID: ${id}`);
+            const {hardDelete = false} = req.query as { hardDelete?: boolean };
+            if (hardDelete) {
+                await this.delete.executeHard(id);
+            } else {
+                await this.delete.execute(id);
+            }
+            logger.info(`User deleted successfully with ID: ${id}`);
 
-            return res.status(STATUS_CODE.NO_CONTENT).json(
-                ApiResponse.success("User deleted successfully")
-            );
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    public async hardDeleteUser(req: Request, res: Response, next: NextFunction): Promise<any> {
-        try {
-            logger.info("User hard delete process started");
-            const id = req.params.id;
-            await this.delete.executeHard(id);
-            logger.info(`User hard deleted successfully with ID: ${id}`);
-
-            return res.status(STATUS_CODE.NO_CONTENT).json(
-                ApiResponse.success("User deleted successfully")
-            );
+            return res.status(STATUS_CODE.NO_CONTENT);
         } catch (error) {
             next(error);
         }

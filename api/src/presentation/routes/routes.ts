@@ -27,11 +27,9 @@ class Routes {
         this.routes.route('/users/:id')
             .get(authMiddleware, this.userController.findById.bind(this.userController))
             .put(authMiddleware, this.userController.updateUser.bind(this.userController))
-            .delete(authMiddleware, this.userController.softDeleteUser.bind(this.userController))
+            .delete(authMiddleware, this.userController.deleteUser.bind(this.userController))
         this.routes.route('/users/email/:email')
             .get(authMiddleware, this.userController.findByEmail.bind(this.userController))
-        this.routes.route('/users/delete/:id')
-            .delete(authMiddleware, this.userController.hardDeleteUser.bind(this.userController))
     }
 
     private configureAuthRoutes(): void {
@@ -40,7 +38,16 @@ class Routes {
 
     private configureRegionRoutes(): void {
         this.routes.route('/regions')
-            .post(this.regionController.createRegion.bind(this.regionController));
+            .post(this.regionController.createRegion.bind(this.regionController))
+            .get(this.regionController.findAll.bind(this.regionController));
+        this.routes.route('/regions/:id')
+            .get(this.regionController.findById.bind(this.regionController))
+            .put(this.regionController.updateRegion.bind(this.regionController))
+            .delete(this.regionController.deleteRegion.bind(this.regionController))
+        this.routes.route('/regions/containing-point')
+            .post(this.regionController.listRegionsContainingPoint.bind(this.regionController))
+        this.routes.route('/regions/near')
+            .post(this.regionController.listRegionsNearPoint.bind(this.regionController))
     }
 }
 
