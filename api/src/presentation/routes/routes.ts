@@ -2,16 +2,19 @@ import {Request, Response, Router} from 'express';
 import {UserController} from "../controllers/user.controller";
 import {AuthController} from "../controllers/auth.controller";
 import {authMiddleware} from "../../infrastructure/middlewares/auth.middleware";
+import {RegionController} from "../controllers/region.controller";
 
 class Routes {
     public routes: Router;
     private readonly userController: UserController;
     private readonly authController: AuthController;
+    private readonly regionController: RegionController;
 
     constructor() {
         this.routes = Router();
         this.userController = new UserController();
         this.authController = new AuthController();
+        this.regionController = new RegionController();
         this.configureUserRoutes();
         this.configureAuthRoutes();
         this.configureRegionRoutes();
@@ -37,9 +40,7 @@ class Routes {
 
     private configureRegionRoutes(): void {
         this.routes.route('/regions')
-            .get((req: Request, res: Response) => {
-                res.send("test");
-            });
+            .post(this.regionController.createRegion.bind(this.regionController));
     }
 }
 
