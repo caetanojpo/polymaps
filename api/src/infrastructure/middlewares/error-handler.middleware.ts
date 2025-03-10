@@ -43,6 +43,10 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
         errorCode: code,
     });
 
+    if (res.headersSent) {
+        return next(error);
+    }
+
     res.status(statusCode).json(ApiResponse.error(message, code, ENV.NODE_ENV === "dev" ? error.stack : undefined));
 
     return;
