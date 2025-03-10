@@ -4,6 +4,7 @@ import {RegionSchema} from "../database/schemas/region.schema";
 import {CreateRegionDto} from "../../application/dtos/region/create-region.dto";
 import {UpdateRegionDto} from "../../application/dtos/region/update-region.dto";
 import {RegionResponseDTO} from "../../application/dtos/region/region-response.dto";
+import {UserMapper} from "./user.mapper";
 
 export class RegionMapper {
     static toSchemaFromDomain(region: Region): RegionSchema {
@@ -11,7 +12,17 @@ export class RegionMapper {
     }
 
     static toDomainFromSchema(regionSchema: RegionSchema): Region {
-        return plainToInstance(Region, regionSchema, {excludeExtraneousValues: true});
+
+        const region = plainToInstance(Region, regionSchema, {
+            excludeExtraneousValues: true,
+            enableImplicitConversion: true
+        });
+
+        if (regionSchema.owner && typeof regionSchema.owner !== 'string') {
+            region.owner = UserMapper.toDomainFromSchema(regionSchema.owner);
+        }
+
+        return region;
     }
 
     static toDomainFromCreateRegionDTO(createRegionDto: CreateRegionDto): Region {
@@ -23,6 +34,11 @@ export class RegionMapper {
     }
 
     static toRegionResponseFromDomain(region: Region): RegionResponseDTO {
-        return plainToInstance(RegionResponseDTO, region, {excludeExtraneousValues: true});
+        const regionResponseDTO = plainToInstance(RegionResponseDTO, region, {excludeExtraneousValues: true});
+
+        if (region.owner) {
+            regionResponseDTO.owner = UserMapper.toUserResponseFromDomain(region.owner);
+        }
+        return regionResponseDTO;
     }
 }

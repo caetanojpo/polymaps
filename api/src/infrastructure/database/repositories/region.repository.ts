@@ -23,9 +23,8 @@ export class RegionRepository implements IRegionRepository {
 
     public async findById(id: string): Promise<Region | null> {
         try {
-            const regionDocument = await this.collection.findById(id).lean().exec();
+            const regionDocument = await this.collection.findById(id).populate('owner').exec();
             return regionDocument ? RegionMapper.toDomainFromSchema(regionDocument) : null
-
         } catch (error) {
             throw new DatabaseException(
                 `MongoDB error when trying to find region by id ${id} - ` + error

@@ -9,7 +9,6 @@ import ObjectId = mongoose.Types.ObjectId;
     }
 })
 export class BaseSchema extends TimeStamps {
-    @Prop({required: true, default: () => (new ObjectId()).toString()})
-
-    _id: string | undefined;
+    @Prop({type: String, required: true, default: () => (new ObjectId()).toString()})
+    _id!: string;
 }
