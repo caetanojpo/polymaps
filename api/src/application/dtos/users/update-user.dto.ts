@@ -9,16 +9,16 @@ import {Coordinates} from "../../../domain/types/coordinates.type";
 import {Type} from "class-transformer";
 
 export class UpdateUserDTO {
-    @IsNotEmpty({ message: "Name is required." })
-    @IsString({ message: "Name must be a valid string." })
+    @IsOptional()
+    @IsString({message: "Name must be a valid string."})
     name: string;
 
-    @IsNotEmpty({ message: "Email is required." })
-    @IsEmail({}, { message: "Invalid email format." })
+    @IsOptional()
+    @IsEmail({}, {message: "Invalid email format."})
     email: string;
 
-    @IsNotEmpty({ message: "Password is required." })
-    @MinLength(6, { message: "Password must be at least 6 characters long." })
+    @IsOptional()
+    @MinLength(6, {message: "Password must be at least 6 characters long."})
     @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/, {
         message: "Password must contain at least one uppercase letter, one number, and one special character."
     })
@@ -26,12 +26,12 @@ export class UpdateUserDTO {
 
     @ValidateIf((o) => !o.coordinates)
     @IsOptional()
-    @IsString({ message: "Address must be a valid string." })
+    @IsString({message: "Address must be a valid string."})
     address?: string;
 
     @ValidateIf((o) => !o.address)
     @IsOptional()
-    @IsObject({ message: "Coordinates must be a valid object." })
+    @IsObject({message: "Coordinates must be a valid object."})
     @ValidateNested()
     @Type(() => Object)
     coordinates?: Coordinates;
