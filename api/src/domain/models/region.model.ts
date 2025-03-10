@@ -1,54 +1,39 @@
 import {Coordinates} from "../types/coordinates.type";
 import {User} from "./user.model";
 import {Geometry} from "../types/geometry.type";
+import {Expose} from "class-transformer";
 
 export class Region {
-    private readonly _id?: string;
-    private name: string;
-    private coordinates: Geometry;
-    private user: User;
-    private isActive?: boolean;
-    private readonly createdAt?: Date;
-    private updatedAt?: Date;
+    @Expose()
+    public readonly _id?: string;
+    @Expose()
+    public name: string;
+    @Expose()
+    public location: Geometry;
+    @Expose()
+    public owner: User;
+    @Expose()
+    public isActive?: boolean;
+    @Expose()
+    public readonly createdAt?: Date;
+    @Expose()
+    public updatedAt?: Date;
 
     constructor(
         name: string,
-        coordinates: Coordinates[][][],
-        user: User,
+        location: Geometry,
+        owner: User,
         id?: string,
         isActive?: boolean,
         createdAt?: Date,
         updatedAt?: Date
     ) {
         this.name = name;
-        this.coordinates = {type: "Polygon", coordinates};
-        this.user = user;
+        this.location = location;
+        this.owner = owner;
         this._id = id;
         this.isActive = isActive;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-
-    //THEORETICAL STUFF I MUST TEST LATER
-    // public removeCoordinate(ringIndex: number, coordinateIndex: number): void {
-    //     if (ringIndex < 0 || ringIndex >= this._coordinates.coordinates.length) {
-    //         throw new CoordinatesException("Invalid ring index.");
-    //     }
-    //     if (coordinateIndex < 0 || coordinateIndex >= this._coordinates.coordinates[ringIndex].length) {
-    //         throw new CoordinatesException("Invalid coordinate index.");
-    //     }
-    //     this._coordinates.coordinates[ringIndex].splice(coordinateIndex, 1);
-    // }
-    //
-    // public updateCoordinate(ringIndex: number, coordinateIndex: number, newCoordinate: Coordinates[]): void {
-    //     if (ringIndex < 0 || ringIndex >= this._coordinates.coordinates.length) {
-    //         throw new CoordinatesException("Invalid ring index.");
-    //     }
-    //     if (coordinateIndex < 0 || coordinateIndex >= this._coordinates.coordinates[ringIndex].length) {
-    //         throw new CoordinatesException("Invalid coordinate index.");
-    //     }
-    //     this._coordinates.coordinates[ringIndex][coordinateIndex] = newCoordinate;
-    // }
-
 }
