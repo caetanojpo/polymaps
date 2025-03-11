@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch src --exec \"ts-node src/index.ts\" -e ts",
-    "test": "jest --config jest.config.ts"
+    "test": "jest --config jest.config.ts --coverage"
   },
   "author": "",
   "license": "ISC",
