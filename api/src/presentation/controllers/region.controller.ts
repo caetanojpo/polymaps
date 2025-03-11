@@ -18,10 +18,10 @@ import {RegionMapper} from "../../infrastructure/mapper/region.mapper";
 import {UpdateRegionDto} from "../../application/dtos/region/update-region.dto";
 
 export class RegionController {
-    private create: CreateRegionUseCase;
-    private find: FindRegionUseCase;
-    private update: UpdateRegionUseCase;
-    private delete: DeleteRegionUseCase;
+    public create: CreateRegionUseCase;
+    public find: FindRegionUseCase;
+    public update: UpdateRegionUseCase;
+    public delete: DeleteRegionUseCase;
 
     constructor() {
         const regionRepository = RegionRepository.getInstance();
@@ -94,7 +94,7 @@ export class RegionController {
 
     public async listRegionsNearPoint(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            const regionData = plainToInstance(ListRegionsNearPointDTO, req.body as object);
+            const regionData = plainToInstance(ListRegionsNearPointDTO, req.body as Object);
             const {maxDistance = 5000, ownerId} = req.query as { maxDistance?: number, ownerId?: string };
 
             const hasErrors = await this.validateErrors(regionData, res);
@@ -127,7 +127,7 @@ export class RegionController {
 
             const updatedRegion = await this.update.execute(id, regionData);
 
-            return res.status(STATUS_CODE.NO_CONTENT);
+           return res.status(STATUS_CODE.NO_CONTENT).send();;
         } catch (error) {
             next(error);
         }
@@ -143,14 +143,14 @@ export class RegionController {
                 await this.delete.execute(id);
             }
 
-            return res.status(STATUS_CODE.NO_CONTENT);
+           return res.status(STATUS_CODE.NO_CONTENT).send();;
         } catch (error) {
             next(error);
         }
     }
 
-    private async validateErrors(userData: any, res: Response): Promise<boolean> {
-        const errors = await validate(userData);
+    private async validateErrors(regionData: any, res: Response): Promise<boolean> {
+        const errors = await validate(regionData);
         if (errors.length > 0) {
             logger.warn("Validation failed for region data", errors.map(err => err.constraints));
             res.status(STATUS_CODE.BAD_REQUEST).json(
