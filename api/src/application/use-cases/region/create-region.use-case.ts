@@ -4,6 +4,8 @@ import {RegionMapper} from "../../../infrastructure/mapper/region.mapper";
 import {CreateRegionDto} from "../../dtos/region/create-region.dto";
 import {IUserRepository} from "../../../domain/repositories/iuser.repository";
 import {RegionException} from "../../../domain/exceptions/region.exception";
+import {GeoJSON} from "../../../domain/models/geo-json.model";
+import LinearRing = GeoJSON.LinearRing;
 
 export class CreateRegionUseCase {
     private readonly repository: IRegionRepository;
@@ -23,8 +25,8 @@ export class CreateRegionUseCase {
         region.owner = user;
         region.location = {
             type: 'Polygon',
-            coordinates: createRegionDTO.coordinates
-        }
+            coordinates: createRegionDTO.coordinates as LinearRing[]
+        };
         region.isActive = true;
         return await this.repository.save(region);
     }

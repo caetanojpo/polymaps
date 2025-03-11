@@ -127,7 +127,8 @@ export class RegionController {
 
             const updatedRegion = await this.update.execute(id, regionData);
 
-           return res.status(STATUS_CODE.NO_CONTENT).send();;
+            return res.status(STATUS_CODE.NO_CONTENT).send();
+            ;
         } catch (error) {
             next(error);
         }
@@ -136,14 +137,16 @@ export class RegionController {
     public async deleteRegion(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             const id = req.params.id;
-            const {hardDelete = false} = req.query as { hardDelete?: boolean };
-            if (hardDelete) {
+            const {hardDelete = "false"} = req.query as { hardDelete?: string };
+            const isHardDelete = hardDelete === "true";
+
+            if (isHardDelete) {
                 await this.delete.executeHard(id);
             } else {
                 await this.delete.execute(id);
             }
 
-           return res.status(STATUS_CODE.NO_CONTENT).send();;
+            return res.status(STATUS_CODE.NO_CONTENT).send();
         } catch (error) {
             next(error);
         }
