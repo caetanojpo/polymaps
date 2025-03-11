@@ -27,7 +27,7 @@ describe('UserRepository', () => {
     });
 
     test('should save a user', async () => {
-        const user = new User('John Doe', 'john@example.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
+        const user = new User('Test User', 'test@test.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
         const savedUser = await userRepository.save(user);
         expect(savedUser).toHaveProperty('_id');
         expect(savedUser.name).toBe(user.name);
@@ -35,7 +35,7 @@ describe('UserRepository', () => {
     });
 
     test('should find a user by id', async () => {
-        const user = new User('Jane Doe', 'jane@example.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
+        const user = new User('Test User', 'test@test.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
         const savedUser = await userRepository.save(user);
         let foundUser;
         if (savedUser._id != null) {
@@ -51,11 +51,11 @@ describe('UserRepository', () => {
     });
 
     test('should find a user by email', async () => {
-        const user = new User('Alice Doe', 'alice@example.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
+        const user = new User('Test User', 'test@test.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
         await userRepository.save(user);
-        const foundUser = await userRepository.findByEmail('alice@example.com');
+        const foundUser = await userRepository.findByEmail('test@test.com');
         expect(foundUser).toBeDefined();
-        expect(foundUser?.email).toBe('alice@example.com');
+        expect(foundUser?.email).toBe('test@test.com');
     });
 
     test('should return null if user not found by email', async () => {
@@ -64,23 +64,23 @@ describe('UserRepository', () => {
     });
 
     test('should find all users', async () => {
-        await userRepository.save(new User('User One', 'one@example.com', 'pass', new mongoose.Types.ObjectId().toHexString()));
-        await userRepository.save(new User('User Two', 'two@example.com', 'pass', new mongoose.Types.ObjectId().toHexString()));
+        await userRepository.save(new User('User One', 'one@test.com', 'pass', new mongoose.Types.ObjectId().toHexString()));
+        await userRepository.save(new User('User Two', 'two@test.com', 'pass', new mongoose.Types.ObjectId().toHexString()));
         const users = await userRepository.findAll();
         expect(users.length).toBe(2);
     });
 
     test('should update a user', async () => {
-        const user = new User('Bob Doe', 'bob@example.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
+        const user = new User('Test User', 'test@test.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
         const savedUser = await userRepository.save(user);
-        const updatedData = new User('Bob Updated', 'bob@example.com', 'newPassword', <string>savedUser._id);
+        const updatedData = new User('Test User Updated', 'test@test.com', 'newPassword', <string>savedUser._id);
         const updatedUser = await userRepository.update(<string>savedUser._id, updatedData);
         expect(updatedUser).toBeDefined();
-        expect(updatedUser?.name).toBe('Bob Updated');
+        expect(updatedUser?.name).toBe('Test User Updated');
     });
 
     test('should delete a user', async () => {
-        const user = new User('Eve Doe', 'eve@example.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
+        const user = new User('Test User', 'test@test.com', 'hashedPassword', new mongoose.Types.ObjectId().toHexString());
         const savedUser = await userRepository.save(user);
         await userRepository.delete(<string>savedUser._id);
         const foundUser = await userRepository.findById(<string>savedUser._id);

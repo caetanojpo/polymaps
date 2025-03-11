@@ -41,8 +41,8 @@ describe("UserController", () => {
         it("should create a user successfully", async () => {
             req = {
                 body: {
-                    name: "John Doe",
-                    email: "john@example.com",
+                    name: "Test User",
+                    email: "test@test.com",
                     password: "123456",
                     coordinates: {
                         latitude: -22.6637,
@@ -62,7 +62,7 @@ describe("UserController", () => {
         });
 
         it("should return 400 when validation fails", async () => {
-            req = {body: {name: "John"}}; // Missing required fields
+            req = {body: {name: "Test User"}}; // Missing required fields
             const validationErrors = [{constraints: { /* mocked errors */}}];
             jest.spyOn(userController, "validateErrors" as any).mockImplementation(() => {
                 return res.status(STATUS_CODE.BAD_REQUEST).json(validationErrors);
@@ -76,10 +76,10 @@ describe("UserController", () => {
         it("should return 400 when location validation fails", async () => {
             req = {
                 body: {
-                    name: "John Doe",
-                    email: "john@example.com",
+                    name: "Test User",
+                    email: "test@test.com",
                     password: "123456",
-                    address: "Some Address"
+                    address: "ABC 123"
                 },
             };
             const validationErrors = [{constraints: { /* mocked errors */}}];
@@ -93,8 +93,8 @@ describe("UserController", () => {
 
         it("should return 400 when location validation fails", async () => {
             const validData = {
-                name: "John Doe",
-                email: "john@example.com",
+                name: "Test User",
+                email: "test@test.com",
                 password: "123456",
                 coordinates: {
                     latitude: -22.6637,
@@ -113,8 +113,8 @@ describe("UserController", () => {
         it("should pass error to next middleware on unexpected error", async () => {
             req = {
                 body: {
-                    name: "John Doe",
-                    email: "john@example.com",
+                    name: "Test User",
+                    email: "test@test.com",
                     password: "123456",
                     coordinates: {
                         latitude: -22.6637,
@@ -134,8 +134,8 @@ describe("UserController", () => {
             req = {params: {id: "123"}};
             const mockUser = {
                 _id: "123",
-                name: "John Doe",
-                email: "john@example.com",
+                name: "Test User",
+                email: "test@test.com",
                 hashedPassword: "hashedpassword123",
             };
             (userController.find.executeById as jest.Mock).mockResolvedValue(mockUser);
@@ -161,7 +161,7 @@ describe("UserController", () => {
         });
 
         it("should exclude password in response", async () => {
-            const mockUser = {_id: "123", hashedPassword: "secret", name: "test", email: "test@example.com"};
+            const mockUser = {_id: "123", hashedPassword: "secret", name: "test", email: "test@test.com"};
             (userController.find.executeById as jest.Mock).mockResolvedValue(mockUser);
 
             await userController.findById(req, res, next);
@@ -180,11 +180,11 @@ describe("UserController", () => {
 
     describe("findByEmail", () => {
         it("should return user by email", async () => {
-            req = { params: { email: "test@example.com" } };
+            req = { params: { email: "test@test.com" } };
             const mockUser = {
                 _id: "123",
-                name: "John Doe",
-                email: "test@example.com",
+                name: "Test User",
+                email: "test@test.com",
                 hashedPassword: "hashed123"
             };
 
@@ -254,8 +254,8 @@ describe("UserController", () => {
             req = {
                 params: {id: "123"},
                 body: {
-                    name: "John Updated",
-                    email: "test@test.com"
+                    name: "Test User Updated",
+                    email: "test.updated@test.com"
                 }
             };
 
@@ -269,7 +269,7 @@ describe("UserController", () => {
         it("should pass error to next middleware on unexpected error in updateUser", async () => {
             req = {
                 params: { id: "123" },
-                body: { name: "John Updated", email: "john.updated@example.com" }
+                body: { name: "Test User Updated", email: "test.updated@test.com" }
             };
             (userController.update.execute as jest.Mock).mockRejectedValue(new Error("Unexpected error"));
             await userController.updateUser(req, res, next);
