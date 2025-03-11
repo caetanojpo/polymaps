@@ -2,7 +2,7 @@ import {RegionController} from "../../../src/presentation/controllers/region.con
 import STATUS_CODE from "../../../src/utils/status-code";
 import {ApiResponse} from "../../../src/utils/api-response";
 import {RegionMapper} from "../../../src/infrastructure/mapper/region.mapper";
-import {regionResponseMock, regionResponseMockList} from "../../mocks/region-reponse.mock";
+import {regionResponseMock, regionResponseMockList} from "../../mocks/region/region-reponse.mock";
 import {Region} from "../../../src/domain/models/region.model";
 
 jest.mock("../../../src/application/use-cases/region/create-region.use-case");

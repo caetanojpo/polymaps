@@ -6,7 +6,7 @@ import {Region} from "../../../src/domain/models/region.model";
 import {RegionMapper} from "../../../src/infrastructure/mapper/region.mapper";
 import {DatabaseException} from "../../../src/domain/exceptions/database.exception";
 import {PolygonModelImpl} from "../../../src/domain/models/polygon.model";
-import {userResponseMock} from "../../mocks/user-response.mock";
+import {userResponseMock} from "../../mocks/user/user-response.mock";
 import {User} from "../../../src/domain/models/user.model";
 import {RegionException} from "../../../src/domain/exceptions/region.exception";
 
