@@ -1,14 +1,14 @@
-import {CreateUserUseCase} from "../../../src/application/use-cases/users/create-user.use-case";
-import {UserRepository} from "../../../src/infrastructure/database/repositories/user.repository";
-import {AuthUseCase} from "../../../src/application/use-cases/auth/auth.use-case";
-import {GeoLocationUseCase} from "../../../src/application/use-cases/geolocation/geo-location.use-case";
-import {User} from "../../../src/domain/models/user.model";
-import {CreateUserDTO} from "../../../src/application/dtos/users/create-user.dto";
-import {ValidateLocationException} from "../../../src/domain/exceptions/validate-location.exception";
+import {CreateUserUseCase} from "../../../../src/application/use-cases/users/create-user.use-case";
+import {UserRepository} from "../../../../src/infrastructure/database/repositories/user.repository";
+import {AuthUseCase} from "../../../../src/application/use-cases/auth/auth.use-case";
+import {GeoLocationUseCase} from "../../../../src/application/use-cases/geolocation/geo-location.use-case";
+import {User} from "../../../../src/domain/models/user.model";
+import {CreateUserDTO} from "../../../../src/application/dtos/users/create-user.dto";
+import {ValidateLocationException} from "../../../../src/domain/exceptions/validate-location.exception";
 
-jest.mock("../../../src/infrastructure/database/repositories/user.repository");
-jest.mock("../../../src/application/use-cases/auth/auth.use-case");
-jest.mock("../../../src/application/use-cases/geolocation/geo-location.use-case");
+jest.mock("../../../../src/infrastructure/database/repositories/user.repository");
+jest.mock("../../../../src/application/use-cases/auth/auth.use-case");
+jest.mock("../../../../src/application/use-cases/geolocation/geo-location.use-case");
 
 describe("CreateUserUseCase", () => {
     let createUserUseCase: CreateUserUseCase;
