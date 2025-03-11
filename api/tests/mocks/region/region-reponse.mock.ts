@@ -1,6 +1,6 @@
-import {RegionResponseDTO} from "../../src/application/dtos/region/region-response.dto";
-import {userResponseMock} from "./user-response.mock";
-import {PolygonModelImpl} from "../../src/domain/models/polygon.model";
+import {RegionResponseDTO} from "../../../src/application/dtos/region/region-response.dto";
+import {userResponseMock} from "../user/user-response.mock";
+import {PolygonModelImpl} from "../../../src/domain/models/polygon.model";
 
 export const regionResponseMock: RegionResponseDTO = new RegionResponseDTO(
     "region123",
