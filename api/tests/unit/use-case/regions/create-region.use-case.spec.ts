@@ -4,6 +4,8 @@ import {IUserRepository} from "../../../../src/domain/repositories/iuser.reposit
 import {CreateRegionDto} from "../../../../src/application/dtos/region/create-region.dto";
 import {Region} from "../../../../src/domain/models/region.model";
 import {RegionException} from "../../../../src/domain/exceptions/region.exception";
+import {userMock} from "../../../mocks/user/userMock";
+import {createRegionDTOMock} from "../../../mocks/region/region.mock";
 
 jest.mock("../../../../src/domain/repositories/iregion.repository");
 jest.mock("../../../../src/domain/repositories/iuser.repository");
@@ -26,28 +28,9 @@ describe("CreateRegionUseCase", () => {
     });
 
     it("should create a region when owner exists", async () => {
-        const createRegionDto: CreateRegionDto = {
-            name: "Test Region",
-            owner: "valid-user-id",
-            coordinates: [
-                [
-                    [-122.431297, 37.773972],
-                    [-122.431300, 37.773975],
-                    [-122.431305, 37.773980],
-                    [-122.431297, 37.773972]
-                ]
-            ],
-        };
-
-        const user = {
-            email: "test@test.com",
-            name: "test",
-            hashedPassword: "password123",
-            address: "ABC 123"
-        };
-        userRepository.findById.mockResolvedValue(user);
+        userRepository.findById.mockResolvedValue(userMock);
         const savedRegion = {
-            ...createRegionDto, owner: user, location: {
+            ...createRegionDTOMock, owner: userMock, location: {
                 type: "Polygon",
                 coordinates: [
                     [
@@ -62,13 +45,13 @@ describe("CreateRegionUseCase", () => {
         } as Region;
         regionRepository.save.mockResolvedValue(savedRegion);
 
-        const result = await createRegionUseCase.execute(createRegionDto);
+        const result = await createRegionUseCase.execute(createRegionDTOMock);
 
         expect(userRepository.findById).toHaveBeenCalledWith("valid-user-id");
         expect(regionRepository.save).toHaveBeenCalledWith(expect.objectContaining({
             name: "Test Region",
-            owner: user,
-            location: {type: 'Polygon', coordinates: createRegionDto.coordinates},
+            owner: userMock,
+            location: {type: 'Polygon', coordinates: createRegionDTOMock.coordinates},
             isActive: true
         }));
         expect(result).toEqual(savedRegion);

@@ -2,7 +2,7 @@ import {DeleteRegionUseCase} from "../../../../src/application/use-cases/region/
 import {IRegionRepository} from "../../../../src/domain/repositories/iregion.repository";
 import {EntityNotFoundException} from "../../../../src/domain/exceptions/entity-not-found.exception";
 import {GeoJSON} from "../../../../src/domain/models/geo-json.model";
-import LinearRing = GeoJSON.LinearRing;
+import {regionMock} from "../../../mocks/region/region.mock";
 
 
 describe("DeleteRegionUseCase", () => {
@@ -21,26 +21,7 @@ describe("DeleteRegionUseCase", () => {
 
     it("should deactivate a region when it exists", async () => {
         const regionId = "valid-region-id";
-        const user = {
-            email: "test@test.com",
-            name: "test",
-            hashedPassword: "password123",
-            address: "ABC 123"
-        };
-        const region = {
-            name: "Test Region", location: {
-                type: "Polygon" as "Polygon",
-                coordinates: [
-                    [
-                        [-122.431297, 37.773972],
-                        [-122.431300, 37.773975],
-                        [-122.431305, 37.773980],
-                        [-122.431297, 37.773972]
-                    ]
-                ] as LinearRing[]
-            }, owner: user, isActive: true, updatedAt: new Date(), id: regionId
-        };
-
+        const region = {...regionMock, id: regionId}
         mockRegionRepository.findById.mockResolvedValue(region);
         mockRegionRepository.update.mockResolvedValue();
 
@@ -60,24 +41,8 @@ describe("DeleteRegionUseCase", () => {
 
     it("should permanently delete a region when it exists", async () => {
         const regionId = "valid-region-id";
-        const user = {
-            email: "test@test.com",
-            name: "test",
-            hashedPassword: "password123",
-            address: "ABC 123"
-        };
         const region = {
-            name: "Test Region", location: {
-                type: "Polygon" as "Polygon",
-                coordinates: [
-                    [
-                        [-122.431297, 37.773972],
-                        [-122.431300, 37.773975],
-                        [-122.431305, 37.773980],
-                        [-122.431297, 37.773972]
-                    ]
-                ] as LinearRing[]
-            }, owner: user, isActive: true, updatedAt: new Date(), id: regionId
+            ...regionMock, id: regionId
         };
 
         mockRegionRepository.findById.mockResolvedValue(region);
