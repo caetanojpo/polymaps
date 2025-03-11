@@ -1,6 +1,6 @@
-import {RegionResponseDTO} from "../../application/dtos/region/region-response.dto";
+import {RegionResponseDTO} from "../../src/application/dtos/region/region-response.dto";
 import {userResponseMock} from "./user-response.mock";
-import {Geometry} from "../../domain/models/geometry.model";
+import {Geometry} from "../../src/domain/models/geometry.model";
 
 export const regionResponseMock: RegionResponseDTO = new RegionResponseDTO(
     "region123",

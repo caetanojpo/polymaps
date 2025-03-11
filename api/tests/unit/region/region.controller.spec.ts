@@ -1,16 +1,16 @@
-import {RegionController} from "../../../presentation/controllers/region.controller";
-import STATUS_CODE from "../../../utils/status-code";
-import {ApiResponse} from "../../../utils/api-response";
-import {RegionMapper} from "../../../infrastructure/mapper/region.mapper";
+import {RegionController} from "../../../src/presentation/controllers/region.controller";
+import STATUS_CODE from "../../../src/utils/status-code";
+import {ApiResponse} from "../../../src/utils/api-response";
+import {RegionMapper} from "../../../src/infrastructure/mapper/region.mapper";
 import {regionResponseMock, regionResponseMockList} from "../../mocks/region-reponse.mock";
-import {Region} from "../../../domain/models/region.model";
+import {Region} from "../../../src/domain/models/region.model";
 
-jest.mock("../../../application/use-cases/region/create-region.use-case");
-jest.mock("../../../application/use-cases/region/find-region.use-case");
-jest.mock("../../../application/use-cases/region/update-region.use-case");
-jest.mock("../../../application/use-cases/region/delete-region.use-case");
+jest.mock("../../../src/application/use-cases/region/create-region.use-case");
+jest.mock("../../../src/application/use-cases/region/find-region.use-case");
+jest.mock("../../../src/application/use-cases/region/update-region.use-case");
+jest.mock("../../../src/application/use-cases/region/delete-region.use-case");
 
-jest.mock("../../../config/logger", () => ({
+jest.mock("../../../src/config/logger", () => ({
     logger: {
         info: jest.fn(),
         warn: jest.fn(),

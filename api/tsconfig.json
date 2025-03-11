@@ -13,10 +13,11 @@
   },
   "types": [
     "reflect-metadata",
-    "mocha"
+    "jest"
   ],
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"

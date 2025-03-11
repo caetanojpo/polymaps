@@ -1,5 +1,5 @@
-import {UserResponseDTO} from "../../application/dtos/users/user-response.dto";
-import {Coordinates} from "../../domain/types/coordinates.type";
+import {UserResponseDTO} from "../../src/application/dtos/users/user-response.dto";
+import {Coordinates} from "../../src/domain/types/coordinates.type";
 
 export const userResponseMock: UserResponseDTO = new UserResponseDTO(
     "user123",

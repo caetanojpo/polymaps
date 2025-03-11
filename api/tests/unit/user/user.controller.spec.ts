@@ -1,15 +1,15 @@
-import {UserController} from "../../../presentation/controllers/user.controller";
-import {UserMapper} from "../../../infrastructure/mapper/user.mapper";
-import STATUS_CODE from "../../../utils/status-code";
-import {ApiResponse} from "../../../utils/api-response";
-import {User} from "../../../domain/models/user.model";
+import {UserController} from "../../../src/presentation/controllers/user.controller";
+import {UserMapper} from "../../../src/infrastructure/mapper/user.mapper";
+import STATUS_CODE from "../../../src/utils/status-code";
+import {ApiResponse} from "../../../src/utils/api-response";
+import {User} from "../../../src/domain/models/user.model";
 
-jest.mock("../../../application/use-cases/users/create-user.use-case");
-jest.mock("../../../application/use-cases/users/find-user.use-case");
-jest.mock("../../../application/use-cases/users/update-user.use-case");
-jest.mock("../../../application/use-cases/users/delete-user.use-case");
+jest.mock("../../../src/application/use-cases/users/create-user.use-case");
+jest.mock("../../../src/application/use-cases/users/find-user.use-case");
+jest.mock("../../../src/application/use-cases/users/update-user.use-case");
+jest.mock("../../../src/application/use-cases/users/delete-user.use-case");
 
-jest.mock("../../../config/logger", () => ({
+jest.mock("../../../src/config/logger", () => ({
     logger: {
         info: jest.fn(),
         warn: jest.fn(),
