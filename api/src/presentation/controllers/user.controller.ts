@@ -16,10 +16,10 @@ import {UpdateUserUseCase} from "../../application/use-cases/users/update-user.u
 import {DeleteUserUseCase} from "../../application/use-cases/users/delete-user.use-case";
 
 export class UserController {
-    private create: CreateUserUseCase;
-    private find: FindUserUseCase;
-    private update: UpdateUserUseCase;
-    private delete: DeleteUserUseCase;
+    public readonly create: CreateUserUseCase;
+    public readonly find: FindUserUseCase;
+    public readonly update: UpdateUserUseCase;
+    public readonly delete: DeleteUserUseCase;
 
     constructor() {
         const userRepository = UserRepository.getInstance();
@@ -56,7 +56,9 @@ export class UserController {
             const id = req.params.id;
 
             const user = await this.find.executeById(id);
-
+            if (!user) {
+                return res.status(STATUS_CODE.NOT_FOUND).json(ApiResponse.error("User not found", "USER_NOT_FOUND"));
+            }
             logger.info(`User found!`);
 
             const mappedUser = UserMapper.toUserResponseFromDomain(user!);
@@ -75,6 +77,9 @@ export class UserController {
             const email = req.params.email;
 
             const user = await this.find.executeByEmail(email);
+            if (!user) {
+                return res.status(STATUS_CODE.NOT_FOUND).json(ApiResponse.error("User not found", "USER_NOT_FOUND"));
+            }
 
             logger.info(`User found!`);
 
@@ -94,12 +99,12 @@ export class UserController {
 
             const users = await this.find.execute();
 
-            logger.info(`Users found!`);
+            logger.info(`Users found:`, users.length);
 
             const mappedUsers = users.map(user => UserMapper.toUserResponseFromDomain(user!));
 
             res.status(STATUS_CODE.OK).json(
-                ApiResponse.success("Users not found", {mappedUsers})
+                ApiResponse.success("Users found", {mappedUsers})
             );
         } catch (error) {
             next(error);
@@ -112,14 +117,22 @@ export class UserController {
             const id = req.params.id;
             const userData = plainToInstance(UpdateUserDTO, req.body as object);
 
-            await this.validateErrors(userData, res);
+            const errors = await validate(userData);
+            if (errors.length > 0) {
+                return res.status(STATUS_CODE.BAD_REQUEST).json(
+                    ApiResponse.error("Validation failed", "VALIDATION_ERROR", errors)
+                );
+            }
 
-            User.validateLocation(userData.address, userData.coordinates, true);
-            const updatedUser = await this.update.execute(id, userData);
+            if (userData.coordinates || userData.address) {
+                User.validateLocation(userData.address, userData.coordinates, true);
+            }
 
-            logger.info(`User updated successfully with ID: ${updatedUser?._id}`);
+            await this.update.execute(id, userData);
 
-            return res.status(STATUS_CODE.NO_CONTENT);
+            logger.info(`User updated successfully with ID: ${id}`);
+            return res.status(STATUS_CODE.NO_CONTENT).send();
+
         } catch (error) {
             next(error);
         }
@@ -137,7 +150,7 @@ export class UserController {
             }
             logger.info(`User deleted successfully with ID: ${id}`);
 
-            return res.status(STATUS_CODE.NO_CONTENT);
+            return res.status(STATUS_CODE.NO_CONTENT).send();
         } catch (error) {
             next(error);
         }
