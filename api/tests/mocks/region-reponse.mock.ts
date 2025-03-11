@@ -1,11 +1,11 @@
 import {RegionResponseDTO} from "../../src/application/dtos/region/region-response.dto";
 import {userResponseMock} from "./user-response.mock";
-import {Geometry} from "../../src/domain/models/geometry.model";
+import {PolygonModelImpl} from "../../src/domain/models/polygon.model";
 
 export const regionResponseMock: RegionResponseDTO = new RegionResponseDTO(
     "region123",
     "Central Park",
-    <Geometry><unknown>{
+    <PolygonModelImpl><unknown>{
         type: "Polygon", coordinates: [
             [
                 [-73.965355, 40.782865],
@@ -24,7 +24,7 @@ export const regionResponseMockList: RegionResponseDTO[] = [
     new RegionResponseDTO(
         "region1",
         "Region 1",
-        <Geometry><unknown>{
+        <PolygonModelImpl><unknown>{
             type: "Polygon", coordinates: [
                 [
                     [10, 20],
@@ -41,7 +41,7 @@ export const regionResponseMockList: RegionResponseDTO[] = [
     new RegionResponseDTO(
         "region2",
         "Region 2",
-        <Geometry><unknown>{
+        <PolygonModelImpl><unknown>{
             type: "Polygon", coordinates: [
                 [
                     [-73.965355, 40.782865],

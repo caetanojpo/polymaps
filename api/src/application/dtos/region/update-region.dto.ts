@@ -1,6 +1,8 @@
 import { IsOptional, IsArray, IsString, IsObject, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { User } from "../../../domain/models/user.model";
+import {GeoJSON} from "../../../domain/models/geo-json.model";
+import LinearRing = GeoJSON.LinearRing;
 
 export class UpdateRegionDto {
     @IsOptional()
@@ -9,16 +11,15 @@ export class UpdateRegionDto {
 
     @IsOptional()
     @IsArray({ message: "Coordinates must be an array." })
-    coordinates?: [[[number]]];
+    coordinates?: LinearRing[];
 
     @IsOptional()
-    @ValidateNested()
-    @Type(() => User)
-    owner?: User;
+    @IsString()
+    ownerId?: string;
 
-    constructor(name?: string, coordinates?: [[[number]]], owner?: User) {
+    constructor(name?: string, coordinates?: LinearRing[], ownerId?: string) {
         this.name = name;
         this.coordinates = coordinates;
-        this.owner = owner;
+        this.ownerId = ownerId;
     }
 }

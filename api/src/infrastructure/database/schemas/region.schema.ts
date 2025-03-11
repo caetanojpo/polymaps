@@ -1,7 +1,7 @@
 import {prop, getModelForClass, index, Ref, modelOptions, plugin} from '@typegoose/typegoose';
 import {BaseSchema} from "./base.schema";
 import {UserSchema} from "./user.schema";
-import {GeometrySchema} from "./geometry.schema";
+import {PolygonSchema} from "./polygon.schema";
 
 
 @modelOptions({options: {customName: 'regions'}})
@@ -10,8 +10,8 @@ export class RegionSchema extends BaseSchema {
     @prop({required: true})
     public name!: string;
 
-    @prop({_id: false, type: GeometrySchema})
-    public location!: GeometrySchema;
+    @prop({_id: false, type: PolygonSchema})
+    public location!: PolygonSchema;
 
     @prop({ref: () => UserSchema, required: true, type: () => String})
     public owner!: Ref<UserSchema>;

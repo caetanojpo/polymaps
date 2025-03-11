@@ -1,6 +1,6 @@
 import {Expose} from "class-transformer";
 import {UserResponseDTO} from "../users/user-response.dto";
-import {Geometry} from "../../../domain/models/geometry.model";
+import {PolygonModelImpl} from "../../../domain/models/polygon.model";
 
 export class RegionResponseDTO {
     @Expose()
@@ -10,7 +10,7 @@ export class RegionResponseDTO {
     name: string;
 
     @Expose()
-    location: Geometry;
+    location: PolygonModelImpl;
 
     @Expose()
     owner: UserResponseDTO;
@@ -24,7 +24,7 @@ export class RegionResponseDTO {
     constructor(
         id: string,
         name: string,
-        location: Geometry,
+        location: PolygonModelImpl,
         owner: UserResponseDTO,
         createdAt: Date,
         updatedAt: Date

@@ -1,7 +1,7 @@
 import {Coordinates} from "../types/coordinates.type";
 import {User} from "./user.model";
 import {Expose} from "class-transformer";
-import {Geometry} from "./geometry.model";
+import {PolygonModelImpl} from "./polygon.model";
 
 export class Region {
     @Expose()
@@ -9,7 +9,7 @@ export class Region {
     @Expose()
     public name: string;
     @Expose()
-    public location: Geometry;
+    public location: PolygonModelImpl;
     @Expose()
     public owner: User;
     @Expose()
@@ -21,7 +21,7 @@ export class Region {
 
     constructor(
         name: string,
-        location: Geometry,
+        location: PolygonModelImpl,
         owner: User,
         id?: string,
         isActive?: boolean,
