@@ -5,7 +5,7 @@ import {RegionModel} from "../../../src/infrastructure/database/schemas/region.s
 import {Region} from "../../../src/domain/models/region.model";
 import {RegionMapper} from "../../../src/infrastructure/mapper/region.mapper";
 import {DatabaseException} from "../../../src/domain/exceptions/database.exception";
-import {Geometry} from "../../../src/domain/models/geometry.model";
+import {PolygonModelImpl} from "../../../src/domain/models/polygon.model";
 import {userResponseMock} from "../../mocks/user-response.mock";
 import {User} from "../../../src/domain/models/user.model";
 import {RegionException} from "../../../src/domain/exceptions/region.exception";
@@ -41,7 +41,7 @@ describe('RegionRepository', () => {
 
         RegionMapper.toDomainFromSchema = jest.fn().mockReturnValue(
             new Region('Test Region',
-                <Geometry><unknown>{
+                <PolygonModelImpl><unknown>{
                     type: "Polygon", coordinates: [
                         [
                             [-122.431297, 37.773972],
@@ -88,7 +88,7 @@ describe('RegionRepository', () => {
         });
 
         RegionMapper.toDomainFromSchema = jest.fn().mockImplementation(region =>
-            new Region(region.name, <Geometry><unknown>{
+            new Region(region.name, <PolygonModelImpl><unknown>{
                 type: "Polygon", coordinates: [
                     [
                         [-122.431297, 37.773972],
@@ -109,7 +109,7 @@ describe('RegionRepository', () => {
     it('should save a new region', async () => {
         const regionId = new mongoose.Types.ObjectId().toHexString();
         const newRegion = new Region(regionId,
-            <Geometry><unknown>{
+            <PolygonModelImpl><unknown>{
                 type: "Polygon", coordinates: [
                     [
                         [-122.431297, 37.773972],
@@ -132,7 +132,7 @@ describe('RegionRepository', () => {
 
     it('should update an existing region', async () => {
         const regionId = new mongoose.Types.ObjectId().toHexString();
-        const updatedRegion = new Region(regionId, <Geometry><unknown>{
+        const updatedRegion = new Region(regionId, <PolygonModelImpl><unknown>{
             type: "Polygon",
             coordinates: [[[-122.431297, 37.773972], [-122.431300, 37.773975], [-122.431305, 37.773980], [-122.431297, 37.773972]]]
         }, <User>userResponseMock);
@@ -151,7 +151,7 @@ describe('RegionRepository', () => {
             exec: jest.fn().mockResolvedValue(null)
         });
 
-        await expect(repository.update('invalid_id', new Region('invalid_id', <Geometry><unknown>{
+        await expect(repository.update('invalid_id', new Region('invalid_id', <PolygonModelImpl><unknown>{
             type: "Polygon",
             coordinates: [[[-122.431297, 37.773972], [-122.431300, 37.773975], [-122.431305, 37.773980], [-122.431297, 37.773972]]]
         }, <User>userResponseMock))).rejects.toThrow(RegionException);
