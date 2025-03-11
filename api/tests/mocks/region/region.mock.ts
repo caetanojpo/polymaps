@@ -1,6 +1,7 @@
 import {Region} from "../../../src/domain/models/region.model";
 import {userMock} from "../user/userMock";
 import {CreateRegionDto} from "../../../src/application/dtos/region/create-region.dto";
+import {UpdateRegionDto} from "../../../src/application/dtos/region/update-region.dto";
 
 export const regionMock: Region = {
     name: "Test Region",
@@ -31,3 +32,16 @@ export const createRegionDTOMock: CreateRegionDto = {
         ]
     ],
 };
+
+export const updateRegionDTOMock: UpdateRegionDto = {
+    name: "Updated Region",
+    ownerId: "valid-owner-id",
+    coordinates: [
+        [
+            [-122.431297, 37.773972],
+            [-122.431300, 37.773975],
+            [-122.431305, 37.773980],
+            [-122.431297, 37.773972]
+        ]
+    ]
+}
