@@ -1,7 +1,3 @@
-import {CreateUserUseCase} from "../../application/use-cases/users/create-user.use-case";
-import {FindUserUseCase} from "../../application/use-cases/users/find-user.use-case";
-import {UpdateUserUseCase} from "../../application/use-cases/users/update-user.use-case";
-import {DeleteUserUseCase} from "../../application/use-cases/users/delete-user.use-case";
 import {UserRepository} from "../../infrastructure/database/repositories/user.repository";
 import {AuthUseCase} from "../../application/use-cases/auth/auth.use-case";
 import {NextFunction, Request, Response} from "express";

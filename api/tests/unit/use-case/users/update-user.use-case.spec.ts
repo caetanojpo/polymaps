@@ -5,13 +5,18 @@ import {GeoLocationUseCase} from "../../../../src/application/use-cases/geolocat
 import {User} from "../../../../src/domain/models/user.model";
 import {UpdateUserDTO} from "../../../../src/application/dtos/users/update-user.dto";
 import {UserMapper} from "../../../../src/infrastructure/mapper/user.mapper";
-import {logger} from "../../../../src/config/logger";
 
 jest.mock("../../../../src/infrastructure/database/repositories/user.repository");
 jest.mock("../../../../src/application/use-cases/auth/auth.use-case");
 jest.mock("../../../../src/application/use-cases/geolocation/geo-location.use-case");
 jest.mock("../../../../src/infrastructure/mapper/user.mapper");
-jest.mock("../../../../src/config/logger");
+jest.mock("../../../../src/config/logger", () => ({
+    logger: {
+        info: jest.fn(),
+        warn: jest.fn(),
+        error: jest.fn(),
+    },
+}));
 
 describe("UpdateUserUseCase", () => {
     let updateUserUseCase: UpdateUserUseCase;
