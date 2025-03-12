@@ -1,0 +1,98 @@
+tags:
+  - name: Auth
+    description: "Endpoints related to user authentication."
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: "User Login"
+      description: "Authenticate a user by verifying their email and password. Returns a JWT token upon successful login."
+      requestBody:
+        description: "User login credentials"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDTO'
+      responses:
+        '200':
+          description: "User logged in successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseLogin'
+        '400':
+          description: "Validation error. The provided login data did not meet required constraints."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: "Unauthorized. Invalid email or password."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequestDTO:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: "The email address of the user."
+          example: "user@example.com"
+        password:
+          type: string
+          format: password
+          description: "User's password. Must be at least 6 characters long, contain one uppercase letter, one number, and one special character."
+          example: "Password@123"
+    LoginResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier of the logged-in user."
+          example: "603d2149f1c2ae3a9876f3c8"
+        token:
+          type: string
+          description: "JWT token to be used for authenticated requests."
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    ApiResponseLogin:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates if the login was successful."
+          example: true
+        message:
+          type: string
+          description: "A message detailing the login result."
+          example: "User logged in"
+        data:
+          $ref: '#/components/schemas/LoginResponseDTO'
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates that the request has failed."
+          example: false
+        message:
+          type: string
+          description: "A descriptive error message."
+          example: "Invalid email or password"
+        error:
+          type: string
+          description: "Error code identifier."
+          example: "AUTH_ERROR"

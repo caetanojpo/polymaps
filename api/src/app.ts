@@ -4,6 +4,8 @@ import {logger} from "./config/logger";
 import routes from "./presentation/routes/routes";
 import {errorHandler} from "./infrastructure/middlewares/error-handler.middleware";
 import STATUS_CODE from "./utils/status-code";
+import {swaggerSpec} from "./config/swagger/swagger";
+import swaggerUi from "swagger-ui-express";
 
 class App {
     public app: Application;
@@ -31,6 +33,8 @@ class App {
         this.app.head("/", (req: Request, res: Response) => {
             res.sendStatus(200);
         });
+
+        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     }
 
     private configureAPIRoutes(): void {

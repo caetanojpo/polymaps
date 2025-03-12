@@ -7,6 +7,7 @@ import STATUS_CODE from "../../utils/status-code";
 import {ApiResponse} from "../../utils/api-response";
 import {LoginRequestDTO} from "../../application/dtos/auth/login-request.dto";
 import {validate} from "class-validator";
+import {LoginResponseDTO} from "../../application/dtos/auth/login-response.dto";
 
 export class AuthController {
     private readonly auth: AuthUseCase;
@@ -25,7 +26,7 @@ export class AuthController {
         }
 
         try {
-            const loggedUser = await this.auth.executeLogin(
+            const loggedUser: LoginResponseDTO = await this.auth.executeLogin(
                 loginData.email,
                 loginData.password
             );
