@@ -8,6 +8,14 @@ paths:
         - Regions
       summary: Create a New Region
       description: "Create a new region with a name, spatial coordinates, and an owner."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
       requestBody:
         description: "Region object that needs to be created."
         required: true
@@ -34,6 +42,13 @@ paths:
       summary: Retrieve All Regions
       description: "Get a list of all regions. Optionally filter by owner."
       parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
         - name: ownerId
           in: query
           description: "Filter regions by the owner's ID."
@@ -60,6 +75,13 @@ paths:
       summary: Retrieve a Region by ID
       description: "Get a region's details by its unique identifier."
       parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
         - name: id
           in: path
           description: "The unique identifier of the region."
@@ -85,6 +107,13 @@ paths:
       summary: Update a Region
       description: "Update an existing region's details."
       parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
         - name: id
           in: path
           description: "The unique identifier of the region to update."
@@ -113,6 +142,13 @@ paths:
       summary: Delete a Region
       description: "Delete a region by its unique identifier. Use the query parameter `hardDelete=true` for a hard delete."
       parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
         - name: id
           in: path
           description: "The unique identifier of the region to delete."
@@ -140,6 +176,14 @@ paths:
         - Regions
       summary: List Regions Containing a Point
       description: "Retrieve regions that contain a specific geographic point."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
       requestBody:
         description: "Coordinates for the point to check."
         required: true
@@ -167,13 +211,20 @@ paths:
       summary: List Regions Near a Point
       description: "Retrieve regions near a specific geographic point. Optionally filter by owner and maximum distance."
       parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
         - name: maxDistance
           in: query
           description: "Maximum distance (in meters) to search for nearby regions."
           required: false
           schema:
             type: number
-            default: 5000
+            default: "5000"
         - name: ownerId
           in: query
           description: "Filter regions by the owner's ID."
@@ -267,12 +318,13 @@ components:
         name:
           type: string
           description: "Name of the region."
-          example: "Central Park"
+          example: "Springfield Park"
         coordinates:
           type: array
           description: "An array of linear rings representing the region's boundaries."
           items:
             $ref: '#/components/schemas/LinearRing'
+          example: "[[[-122.431297,37.773972],[-122.431300,37.773975],[-122.431305,37.773980],[-122.431297,37.773972]]]"
         owner:
           type: string
           description: "Owner's user ID."

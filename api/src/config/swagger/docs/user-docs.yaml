@@ -10,6 +10,17 @@ paths:
       description: Retrieve a comprehensive list of all registered users.
       security:
         - bearerAuth: []
+      parameters:
+        - name: lng
+          in: query
+          description: Language for the response, can be `en` or `pt`. Default is `en`.
+          required: false
+          schema:
+            type: string
+            enum:
+              - en
+              - pt
+            default: en
       responses:
         '200':
           description: A list of users was successfully retrieved.
@@ -28,6 +39,17 @@ paths:
         - Users
       summary: Create a New User
       description: Create a new user with the provided information. The payload must adhere to validation rules.
+      parameters:
+        - name: lng
+          in: query
+          description: Language for the response, can be `en` or `pt`. Default is `en`.
+          required: false
+          schema:
+            type: string
+            enum:
+              - en
+              - pt
+            default: en
       requestBody:
         description: User object that needs to be added.
         required: true
@@ -63,6 +85,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: lng
+          in: query
+          description: Language for the response, can be `en` or `pt`. Default is `en`.
+          required: false
+          schema:
+            type: string
+            enum:
+              - en
+              - pt
+            default: en
       responses:
         '200':
           description: User found.
@@ -90,6 +122,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: lng
+          in: query
+          description: Language for the response, can be `en` or `pt`. Default is `en`.
+          required: false
+          schema:
+            type: string
+            enum:
+              - en
+              - pt
+            default: en
       requestBody:
         description: Updated user object containing new values.
         required: true
@@ -126,6 +168,16 @@ paths:
           required: false
           schema:
             type: boolean
+        - name: lng
+          in: query
+          description: Language for the response, can be `en` or `pt`. Default is `en`.
+          required: false
+          schema:
+            type: string
+            enum:
+              - en
+              - pt
+            default: en
       responses:
         '204':
           description: User deleted successfully (no content returned).
@@ -150,6 +202,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: lng
+          in: query
+          description: Language for the response, can be `en` or `pt`. Default is `en`.
+          required: false
+          schema:
+            type: string
+            enum:
+              - en
+              - pt
+            default: en
       responses:
         '200':
           description: User found.
@@ -190,12 +252,12 @@ components:
       properties:
         name:
           type: string
-          example: John Doe
+          example: oz map
           description: Full name of the user.
         email:
           type: string
           format: email
-          example: john@example.com
+          example: oz@oz.com
           description: User's email address.
         password:
           type: string
@@ -204,11 +266,8 @@ components:
           description: User's password (must contain at least one uppercase letter, one number, and one special character).
         address:
           type: string
-          example: "123 Main St"
+          example: "Rio Brilhante, Região Geográfica Imediata de Dourados, Região Geográfica Intermediária de Dourados, Mato Grosso do Sul, Região Centro-Oeste, Brasil"
           description: Physical address of the user.
-        coordinates:
-          $ref: '#/components/schemas/Coordinates'
-          description: Geographical coordinates of the user.
     UpdateUserDTO:
       type: object
       properties:
@@ -228,11 +287,8 @@ components:
           description: Updated password.
         address:
           type: string
-          example: "123 Main St"
+          example: "123 Main St(Seek for each on google maps or other related)"
           description: Updated physical address.
-        coordinates:
-          $ref: '#/components/schemas/Coordinates'
-          description: Updated geographical coordinates.
     UserResponseDTO:
       type: object
       properties:
@@ -295,13 +351,10 @@ components:
           example: "Users found"
           description: A descriptive message.
         data:
-          type: object
-          properties:
-            mappedUsers:
-              type: array
-              items:
-                $ref: '#/components/schemas/UserResponseDTO'
-              description: An array of user objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponseDTO'
+          description: List of users.
     ApiResponseCreated:
       type: object
       properties:
@@ -311,27 +364,14 @@ components:
           description: Indicates if the operation was successful.
         message:
           type: string
-          example: "User created successfully"
-          description: A descriptive message.
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-              example: "603d2149f1c2ae3a9876f3c8"
-              description: Unique identifier of the newly created user.
+          example: "User created successfully."
+          description: Success message after creation.
     Error:
       type: object
       properties:
         success:
           type: boolean
           example: false
-          description: Indicates if the operation failed.
         message:
           type: string
-          example: "Error message"
-          description: A descriptive error message.
-        error:
-          type: string
-          example: "ERROR_CODE"
-          description: Specific error code.
+          example: "Error message describing what went wrong."

@@ -52,7 +52,7 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
         return next(error);
     }
 
-    res.status(statusCode).json(ApiResponse.error(req.t(message), code, ENV.NODE_ENV === "dev" ? error.stack : undefined));
+    res.status(statusCode).json(ApiResponse.error(message, code, ENV.NODE_ENV === "dev" ? error.stack : undefined));
 
     return;
 };

@@ -38,16 +38,16 @@ class Routes {
 
     private configureRegionRoutes(): void {
         this.routes.route('/regions')
-            .post(this.regionController.createRegion.bind(this.regionController))
-            .get(this.regionController.findAll.bind(this.regionController));
+            .post(authMiddleware, this.regionController.createRegion.bind(this.regionController))
+            .get(authMiddleware, this.regionController.findAll.bind(this.regionController));
         this.routes.route('/regions/:id')
-            .get(this.regionController.findById.bind(this.regionController))
-            .put(this.regionController.updateRegion.bind(this.regionController))
-            .delete(this.regionController.deleteRegion.bind(this.regionController))
+            .get(authMiddleware, this.regionController.findById.bind(this.regionController))
+            .put(authMiddleware, this.regionController.updateRegion.bind(this.regionController))
+            .delete(authMiddleware, this.regionController.deleteRegion.bind(this.regionController))
         this.routes.route('/regions/containing-point')
-            .post(this.regionController.listRegionsContainingPoint.bind(this.regionController))
+            .post(authMiddleware, this.regionController.listRegionsContainingPoint.bind(this.regionController))
         this.routes.route('/regions/near')
-            .post(this.regionController.listRegionsNearPoint.bind(this.regionController))
+            .post(authMiddleware, this.regionController.listRegionsNearPoint.bind(this.regionController))
     }
 }
 
