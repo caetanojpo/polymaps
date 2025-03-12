@@ -26,3 +26,19 @@ export interface Region {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface Point {
+    lat: number;
+    lng: number;
+}
+
+export interface Region {
+    id: string;
+    name: string;
+    geometry: {
+        type: 'Polygon';
+        coordinates: Point[][];
+    };
+    createdAt: Date;
+    updatedAt: Date;
+}

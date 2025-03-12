@@ -16,7 +16,7 @@ export function Button({
                            className = '',
                            ...props
                        }: ButtonProps) {
-    const baseStyles = "w-full flex  items-center mt-10 justify-center px-4 py-2 rounded-md text-[1.8rem] font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer transition duration-200";
+    const baseStyles = "w-full flex items-center justify-center px-4 py-2 rounded-md text-[1.8rem] font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer transition duration-200";
 
     const variants = {
         primary: "bg-primary hover:bg-subprimary-700 text-white border-transparent",

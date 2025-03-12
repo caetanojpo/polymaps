@@ -10,7 +10,7 @@ interface InputProps {
     required?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({
+const InputLogin: React.FC<InputProps> = ({
                                          id,
                                          type,
                                          value,
@@ -55,4 +55,4 @@ const Input: React.FC<InputProps> = ({
     );
 };
 
-export default Input;
+export default InputLogin;
