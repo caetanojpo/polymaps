@@ -6,6 +6,8 @@ import {errorHandler} from "./infrastructure/middlewares/error-handler.middlewar
 import STATUS_CODE from "./utils/status-code";
 import {swaggerSpec} from "./config/swagger/swagger";
 import swaggerUi from "swagger-ui-express";
+import i18next from './config/i18n';
+import i18nextMiddleware from 'i18next-http-middleware';
 
 class App {
     public app: Application;
@@ -22,12 +24,13 @@ class App {
         this.app.use(cors());
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
+        this.app.use(i18nextMiddleware.handle(i18next));
 
     }
 
     private configureCoreRoutes(): void {
         this.app.get("/", (req: Request, res: Response) => {
-            res.send("Welcome to the API!");
+            res.send(req.t('welcome'));
         });
 
         this.app.head("/", (req: Request, res: Response) => {
