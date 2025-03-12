@@ -14,27 +14,22 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
         case "ValidateLocationException":
             statusCode = STATUS_CODE.BAD_REQUEST;
             code = "VALIDATION_ERROR";
-            message="errors.location";
             break;
         case "UserException":
             statusCode = STATUS_CODE.BAD_REQUEST;
             code = "USER_ERROR";
-            message="errors.user";
             break;
         case "EntityNotFoundException":
             statusCode = STATUS_CODE.NOT_FOUND;
             code = "ENTITY_NOT_FOUND_ERROR";
-            message="errors.entity";
             break;
         case "DatabaseException":
             statusCode = STATUS_CODE.INTERNAL_SERVER_ERROR;
             code = "DATABASE_ERROR";
-            message="errors.database";
             break;
         case "CoordinatesException":
             statusCode = STATUS_CODE.BAD_REQUEST;
             code = "COORDINATES_ERROR";
-            message="errors.coordinates";
             break;
         default:
             code = code || error.errorCode || "UNKNOWN_ERROR";

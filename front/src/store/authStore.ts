@@ -10,32 +10,37 @@ export interface AuthState {
     setUser: (user: User | null) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
     user: null,
     loading: false,
     setUser: (user) => set({ user }),
     signIn: async (email, password) => {
-        // Mock successful login
-        const mockUser: User = {
-            id: '1',
-            name: 'Test User',
-            email,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-        set({ user: mockUser });
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data.status === "error") {
+            throw new Error(data.message || 'Login failed');
+        }
+        set({ user: data.data.mappedUser });
     },
     signUp: async (email, password, name) => {
-        const mockUser: User = {
-            id: '1',
-            name,
-            email,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-        set({ user: mockUser });
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data.status === "error") {
+            throw new Error(data.message || 'Sign up failed');
+        }
+        await get().signIn(email, password);
     },
     signOut: async () => {
         set({ user: null });
-    },
+    }
 }));

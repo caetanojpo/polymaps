@@ -1,4 +1,4 @@
-import AuthContainer from '@/components/organisms/AuthContainer';
+import AuthContainer from '@/components/organisms/Containers/AuthContainer';
 
 
 export default function HomePage() {

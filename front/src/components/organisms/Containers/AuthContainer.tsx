@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
-import LoginForm from '@/components/molecules/LoginForm';
+import LoginForm from '@/components/molecules/Forms/LoginForm';
 
 export default function AuthContainer() {
     const router = useRouter();
@@ -14,10 +14,40 @@ export default function AuthContainer() {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const preValidateData = (errors: string[]) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            errors.push('Please enter a valid email.');
+        }
+        if (!isLogin) {
+            if (name.trim().length < 2) {
+                errors.push('Name must be at least 2 characters long.');
+            }
+        }
+        if (password.length < 6) {
+            errors.push('Password must be at least 6 characters long.');
+        }
+        // Must include at least one uppercase letter, one number, and one special character.
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
+        if (!passwordRegex.test(password)) {
+            errors.push('Password must include at least one uppercase letter, one number, and one special character.');
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setIsSubmitting(true);
+        const errors: string[] = [];
+        preValidateData(errors);
+
+        if (errors.length > 0) {
+            setError(errors.join(' '));
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
             if (isLogin) {
@@ -27,7 +57,9 @@ export default function AuthContainer() {
             }
             router.push('/dashboard');
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Ocorreu um erro');
+            setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -39,7 +71,7 @@ export default function AuthContainer() {
                 </h2>
 
                 {error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 overflow-x-scroll">
                         {error}
                     </div>
                 )}
@@ -53,12 +85,14 @@ export default function AuthContainer() {
                     onPasswordChange={setPassword}
                     onNameChange={setName}
                     onSubmit={handleSubmit}
+                    disabled={isSubmitting}
                 />
 
                 <div className="mt-4 text-center">
                     <button
+                        disabled={isSubmitting}
                         onClick={() => setIsLogin(!isLogin)}
-                        className="text-[1.4rem] text-dark hover:text-subprimary-800 cursor-pointer transition duration-200"
+                        className="text-[1.4rem] text-dark hover:text-subprimary-800 cursor-pointer transition duration-200 disabled:opacity-50"
                     >
                         {isLogin ? 'Need an account? Sign up' : 'Already have an account? Sign in'}
                     </button>

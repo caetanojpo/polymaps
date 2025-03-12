@@ -8,16 +8,18 @@ interface InputProps {
     onChange: (value: string) => void;
     placeholder?: string;
     required?: boolean;
+    disabled?: boolean;
 }
 
 const InputLogin: React.FC<InputProps> = ({
-                                         id,
-                                         type,
-                                         value,
-                                         onChange,
-                                         placeholder = '',
-                                         required = false,
-                                     }) => {
+                                              id,
+                                              type,
+                                              value,
+                                              onChange,
+                                              placeholder = '',
+                                              required = false,
+                                              disabled = false,
+                                          }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -34,13 +36,15 @@ const InputLogin: React.FC<InputProps> = ({
                 value={value}
                 placeholder={placeholder}
                 onChange={(e) => onChange(e.target.value)}
-                className="p-3 mt-1 block w-full text-[1.2rem] text-dark rounded-md border-gray-200 border-1 border-solid shadow-sm"
+                disabled={disabled}
+                className="p-3 mt-1 block w-full text-[1.2rem] text-dark rounded-md border-gray-200 border border-solid shadow-sm"
                 required={required}
             />
             {type === 'password' && (
                 <button
                     type="button"
                     onClick={togglePasswordVisibility}
+                    disabled={disabled}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                     aria-label="Toggle password visibility"
                 >
