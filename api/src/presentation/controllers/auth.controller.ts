@@ -18,24 +18,39 @@ export class AuthController {
     }
 
     public async login(req: Request, res: Response, next: NextFunction): Promise<any> {
-        const loginData = plainToInstance(LoginRequestDTO, req.body as object);
-        const errors = await validate(loginData);
-        if (errors.length > 0) {
-            logger.warn("Validation failed for user data", errors.map(err => err.constraints))
-            return res.status(STATUS_CODE.BAD_REQUEST).json(ApiResponse.error("Validation failed", "VALIDATION_ERROR", errors.map(err => err.constraints)));
-        }
-
+        logger.info("Received login request", {email: req.body.email});
         try {
+            const loginData = plainToInstance(LoginRequestDTO, req.body as object);
+
+            const hasErrors = await this.validateErrors(loginData, req, res);
+            if (hasErrors) return;
+
             const loggedUser: LoginResponseDTO = await this.auth.executeLogin(
                 loginData.email,
                 loginData.password
             );
-            res.status(STATUS_CODE.OK).json(
-                ApiResponse.success("User logged in", loggedUser)
-            );
+
+            logger.info("User logged in successfully", {email: loginData.email});
+            res.status(STATUS_CODE.OK).json(ApiResponse.success(req.t("auth.logged"), loggedUser));
         } catch (error) {
+            logger.error("Login process failed", {error: error});
             next(error);
         }
+    }
+
+    private async validateErrors(loginData: any, req: Request, res: Response): Promise<boolean> {
+        const errors = await validate(loginData);
+        if (errors.length > 0) {
+            logger.warn("Validation failed for user data", {
+                email: loginData.email,
+                errors: errors.map(err => err.constraints),
+            });
+            res.status(STATUS_CODE.BAD_REQUEST).json(
+                ApiResponse.error(req.t("validation.failed"), "VALIDATION_ERROR", errors.map(err => err.constraints))
+            );
+            return true;
+        }
+        return false;
     }
 }
 

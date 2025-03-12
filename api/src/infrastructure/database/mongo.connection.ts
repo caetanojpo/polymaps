@@ -14,7 +14,7 @@ class MongoConnection {
             await mongoose.connect(this.uri);
             logger.info("Database connection established successfully.");
         } catch (error) {
-            logger.logFormatted("error", "Database connection error: {}", error);
+            logger.error(`Failed to establish database connection: ${error}`);
             process.exit(1);
         }
     };
@@ -22,9 +22,9 @@ class MongoConnection {
     public async shutdown():Promise<void> {
         try {
             await mongoose.connection.close();
-            logger.info("Database disconnected successfully.");
+            logger.info("Database connection closed successfully.");
         } catch (error) {
-            logger.logFormatted("info", "Database disconnected successfully.", error);
+            logger.error(`Error during database disconnection: ${error}`);
         }
     };
 }

@@ -32,95 +32,100 @@ export class UserController {
 
     public async createUser(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("User creation process started");
             const userData = plainToInstance(CreateUserDTO, req.body as object);
+            logger.info('Received create user request with data', userData);
 
-            await this.validateErrors(userData, res);
+            await this.validateErrors(userData, req, res);
 
             User.validateLocation(userData.address, userData.coordinates);
             const createdUser = await this.create.execute(userData);
-
-            logger.info(`User created successfully with ID: ${createdUser?._id}`);
+            logger.info('User created successfully', {userId: createdUser?._id});
 
             return res.status(STATUS_CODE.CREATED).json(
-                ApiResponse.success("User created successfully", {id: createdUser?._id})
+                ApiResponse.success(req.t('user.created'), {id: createdUser?._id})
             );
         } catch (error) {
+            logger.error('Error creating user', error);
             next(error);
         }
     }
 
     public async findById(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("Finding user by id process started");
             const id = req.params.id;
+            logger.info('Received find user by ID request', {userId: id});
 
             const user = await this.find.executeById(id);
             if (!user) {
-                return res.status(STATUS_CODE.NOT_FOUND).json(ApiResponse.error("User not found", "USER_NOT_FOUND"));
+                logger.warn('User not found', {userId: id});
+                return res.status(STATUS_CODE.NOT_FOUND).json(ApiResponse.error(req.t('user.not_found'), "USER_NOT_FOUND"));
             }
-            logger.info(`User found!`);
 
             const mappedUser = UserMapper.toUserResponseFromDomain(user!);
+            logger.info('User found', {userId: id, user: mappedUser});
 
             res.status(STATUS_CODE.OK).json(
-                ApiResponse.success("User found", {mappedUser})
+                ApiResponse.success(req.t('user.found'), {mappedUser})
             );
         } catch (error) {
+            logger.error('Error finding user by ID', error);
             next(error);
         }
     }
 
     public async findByEmail(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("Finding user by email process started");
             const email = req.params.email;
+            logger.info('Received find user by email request', {email});
 
             const user = await this.find.executeByEmail(email);
             if (!user) {
-                return res.status(STATUS_CODE.NOT_FOUND).json(ApiResponse.error("User not found", "USER_NOT_FOUND"));
+                logger.warn('User not found', {email});
+                return res.status(STATUS_CODE.NOT_FOUND).json(ApiResponse.error(req.t('user.not_found'), "USER_NOT_FOUND"));
             }
 
-            logger.info(`User found!`);
-
             const mappedUser = UserMapper.toUserResponseFromDomain(user!);
+            logger.info('User found', {email, user: mappedUser});
 
             res.status(STATUS_CODE.OK).json(
-                ApiResponse.success("User found", {mappedUser})
+                ApiResponse.success(req.t('user.found'), {mappedUser})
             );
         } catch (error) {
+            logger.error('Error finding user by email', error);
             next(error);
         }
     }
 
     public async findAll(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("Finding all users process started");
+            logger.info('Received find all users request');
 
             const users = await this.find.execute();
-
-            logger.info(`Users found:`, users.length);
-
             const mappedUsers = users.map(user => UserMapper.toUserResponseFromDomain(user!));
 
+            logger.info('Found users', {userCount: mappedUsers.length});
+
             res.status(STATUS_CODE.OK).json(
-                ApiResponse.success("Users found", {mappedUsers})
+                ApiResponse.success(req.t('users.found'), {mappedUsers})
             );
         } catch (error) {
+            logger.error('Error finding all users', error);
             next(error);
         }
     }
 
     public async updateUser(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("User update process started");
             const id = req.params.id;
             const userData = plainToInstance(UpdateUserDTO, req.body as object);
 
+            logger.info('Received update user request', {userId: id, data: userData});
+
             const errors = await validate(userData);
             if (errors.length > 0) {
+                logger.warn('Validation failed', {userId: id, errors});
                 return res.status(STATUS_CODE.BAD_REQUEST).json(
-                    ApiResponse.error("Validation failed", "VALIDATION_ERROR", errors)
+                    ApiResponse.error(req.t('validation.failed'), "VALIDATION_ERROR", errors)
                 );
             }
 
@@ -129,38 +134,43 @@ export class UserController {
             }
 
             await this.update.execute(id, userData);
+            logger.info('User updated successfully', {userId: id});
 
-            logger.info(`User updated successfully with ID: ${id}`);
             return res.status(STATUS_CODE.NO_CONTENT).send();
 
         } catch (error) {
+            logger.error('Error updating user', error);
             next(error);
         }
     }
 
     public async deleteUser(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("User soft delete process started");
             const id = req.params.id;
             const {hardDelete = false} = req.query as { hardDelete?: boolean };
+
+            logger.info('Received delete user request', {userId: id, hardDelete});
+
             if (hardDelete) {
                 await this.delete.executeHard(id);
+                logger.info('User hard deleted', {userId: id});
             } else {
                 await this.delete.execute(id);
+                logger.info('User soft deleted', {userId: id});
             }
-            logger.info(`User deleted successfully with ID: ${id}`);
 
             return res.status(STATUS_CODE.NO_CONTENT).send();
         } catch (error) {
+            logger.error('Error deleting user', error);
             next(error);
         }
     }
 
-    private async validateErrors(userData: any, res: Response) {
+    private async validateErrors(userData: any, req: Request, res: Response) {
         const errors = await validate(userData);
         if (errors.length > 0) {
-            logger.warn("Validation failed for user data", errors.map(err => err.constraints))
-            return res.status(STATUS_CODE.BAD_REQUEST).json(ApiResponse.error("Validation failed", "VALIDATION_ERROR", errors.map(err => err.constraints)));
+            logger.warn("Validation failed for user data", errors.map(err => err.constraints));
+            return res.status(STATUS_CODE.BAD_REQUEST).json(ApiResponse.error(req.t('validation.failed'), "VALIDATION_ERROR", errors.map(err => err.constraints)));
         }
     }
 }

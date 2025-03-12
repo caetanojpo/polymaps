@@ -2,6 +2,7 @@ import {IRegionRepository} from "../../../domain/repositories/iregion.repository
 import {Region} from "../../../domain/models/region.model";
 import {EntityNotFoundException} from "../../../domain/exceptions/entity-not-found.exception";
 import {Coordinates} from "../../../domain/types/coordinates.type";
+import {logger} from "../../../config/logger";
 
 export class FindRegionUseCase {
     private readonly repository: IRegionRepository;
@@ -13,6 +14,7 @@ export class FindRegionUseCase {
     public async executeById(id: string): Promise<Region | null> {
         const region = await this.repository.findById(id);
         if (!region) {
+            logger.warn("Region not found by ID", {regionId: id});
             throw new EntityNotFoundException("Region", id);
         }
         return region;

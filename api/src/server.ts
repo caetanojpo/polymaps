@@ -17,12 +17,12 @@ class Server {
         try {
             await this.database.connect();
             const server = this.app.listen(this.port, () => {
-                logger.info(`Server running on port ${this.port}`);
+                logger.info(`Server is up and running on port ${this.port}`);
             });
 
             this.setupGracefulShutdown(server);
         } catch (error) {
-            logger.error('Failed to start server:', error);
+            logger.error(`Server startup failed: ${error}`);
             process.exit(1);
         }
     }
@@ -32,32 +32,33 @@ class Server {
         process.on('SIGINT', () => this.handleShutdown('SIGINT', server));
 
         process.on('unhandledRejection', (error: Error) => {
-            logger.error(`Unhandled Rejection: ${error}`);
+            logger.error(`Unhandled Promise Rejection: ${error.message}`, {stack: error.stack});
             this.shutdownApp(server);
         });
 
         process.on('uncaughtException', (error: Error) => {
-            logger.error(`Uncaught Exception: ${error.message}`);
+            logger.error(`Uncaught Exception: ${error.message}`, {stack: error.stack});
             this.shutdownApp(server);
         });
     }
 
     private handleShutdown(signal: string, server: any): void {
-        logger.info(`Received ${signal}. Shutting down gracefully...`);
+        logger.info(`Received ${signal}. Initiating graceful shutdown...`);
 
         server.close(async () => {
-            logger.info('HTTP server closed');
+            logger.info('HTTP server successfully closed.');
             await this.database.shutdown();
             process.exit(0);
         });
 
         setTimeout(() => {
-            logger.error('Forcing shutdown due to timeout');
+            logger.error('Timeout reached. Forcing shutdown...');
             process.exit(1);
         }, 5000);
     }
 
     private shutdownApp(server: any): void {
+        logger.error('Shutting down application due to an unhandled error');
         server.close(() => process.exit(1));
     }
 }
