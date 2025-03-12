@@ -29,7 +29,6 @@ export default function AuthContainer() {
         if (password.length < 6) {
             errors.push('Password must be at least 6 characters long.');
         }
-        // Must include at least one uppercase letter, one number, and one special character.
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
         if (!passwordRegex.test(password)) {
             errors.push('Password must include at least one uppercase letter, one number, and one special character.');
