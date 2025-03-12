@@ -15,7 +15,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     };
 
     try {
-        const loginRequest = await fetch(
+        const registerRequest = await fetch(
             `${process.env.NEXT_PUBLIC_DEV_URL}/api/v1/users`,
             {
                 body: JSON.stringify(body),
@@ -25,10 +25,10 @@ export async function POST(request: Request): Promise<NextResponse> {
                 },
             }
         );
-        const authResponse = await loginRequest.json();
-        const statusCode = loginRequest.status;
+        const registerResponse = await registerRequest.json();
+        const statusCode = registerRequest.status;
 
-        const returnResponse = {statusCode, ...authResponse};
+        const returnResponse = {statusCode, ...registerResponse};
         return NextResponse.json(returnResponse, {
             headers: {
                 "Access-Control-Allow-Origin": "*",

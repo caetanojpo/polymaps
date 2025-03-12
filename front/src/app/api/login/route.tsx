@@ -38,21 +38,13 @@ export async function POST(request: Request): Promise<NextResponse> {
             });
         }
 
-        const cookieStore = await cookies();
-        const maxAge = 3 * 24 * 60 * 60;
-
         const loginData = authResponse;
-        cookieStore.set("Authorization", loginData.data.token, {
-            secure: true,
-            maxAge: maxAge,
-        });
-        const token = cookieStore.get("Authorization");
 
         const userRequest = await fetch(
             `${process.env.NEXT_PUBLIC_DEV_URL}/api/v1/users/email/${email}`,
             {
                 headers: {
-                    Authorization: `Bearer ${token?.value}`,
+                    Authorization: `Bearer ${loginData.data.token}`,
                 },
             }
         );
@@ -60,10 +52,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         userResponse.data.token = loginData.data.token;
 
         loginData.statusCode = returnResponse.statusCode;
-        cookieStore.set("user", JSON.stringify(userResponse.data), {
-            secure: true,
-            maxAge: maxAge,
-        });
         return NextResponse.json(userResponse, {
             headers: {
                 "Access-Control-Allow-Origin": "*",

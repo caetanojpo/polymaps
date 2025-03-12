@@ -38,7 +38,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             body: JSON.stringify({name, email, password})
         });
         const data = await response.json();
-        console.log(data);
         if (data.status === "error") {
             throw new Error(data.message || 'Sign up failed');
         }
