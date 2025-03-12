@@ -1,35 +1,39 @@
 "use client"
-import React, {useState} from 'react';
-import {DashboardTemplate} from '@/components/templates/DashboardTemplate';
-import {Coordinates, Region} from '@/types';
+import React from 'react';
+import { DashboardTemplate } from '@/components/templates/DashboardTemplate';
+import { Coordinates, Region } from '@/types';
+import { useAuthStore } from "@/store/authStore";
+import { useRegionStore } from '@/store/regionStore';
 
 export default function Dashboard() {
-    const [regions, setRegions] = useState<Region[]>([]);
+    const { user, token } = useAuthStore();
+    const { listOfRegions, setRegions, addRegion } = useRegionStore();
 
     const handleSearch = async (type: 'contains' | 'near', coordinates: { latitude: number; longitude: number }) => {
         try {
             const points: Coordinates = coordinates;
+            // Replace this with your actual searchRegions API call
             // const data = await searchRegions(points);
+            const data: Region[] = []; // For example purposes only
             setRegions(data);
         } catch (error) {
             console.error(`Error searching regions ${type}:`, error);
         }
     };
 
-    const handleAddRegion = async (name: string, coordinates: { latitude: number; longitude: number }[]) => {
+    const handleAddRegion = async (name: string, coords: { latitude: number; longitude: number }[]) => {
         try {
-            const geometry = {
-                type: 'Polygon' as const,
-                coordinates: [
-                    [...coordinates.map(coord => [coord.longitude, coord.latitude]),
-                        [coordinates[0].longitude, coordinates[0].latitude]]
-                ]
-            };
-
-            //TODO add user ID here
-
-            // const newRegion = await createRegion(name, geometry);
-            setRegions(prevRegions => [...prevRegions, newRegion]);
+            const coordinates = [
+                [...coords.map(coord => [coord.longitude, coord.latitude])]
+            ];
+            const ownerId = user?._id;
+            const response = await fetch('/api/regions/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, coordinates, ownerId, token })
+            });
+            const data = await response.json();
+            addRegion(data.data.mappedRegion);
         } catch (error) {
             console.error('Error creating region:', error);
         }
@@ -37,7 +41,7 @@ export default function Dashboard() {
 
     return (
         <DashboardTemplate
-            regions={regions}
+            regions={listOfRegions}
             onSearch={handleSearch}
             onAddRegion={handleAddRegion}
         />

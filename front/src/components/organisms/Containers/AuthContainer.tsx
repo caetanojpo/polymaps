@@ -1,14 +1,14 @@
-'use client';
-
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
+'use client'
+import React, {useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {useAuthStore} from '@/store/authStore';
+import {useRegionStore} from '@/store/regionStore';
 import LoginForm from '@/components/molecules/Forms/LoginForm';
 
 export default function AuthContainer() {
     const router = useRouter();
-    const signIn = useAuthStore((state) => state.signIn);
-    const signUp = useAuthStore((state) => state.signUp);
+    const {signIn, signUp} = useAuthStore();
+    const {setRegions} = useRegionStore(); // Ensure fetchRegions accepts a user id
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,10 +21,8 @@ export default function AuthContainer() {
         if (!emailRegex.test(email)) {
             errors.push('Please enter a valid email.');
         }
-        if (!isLogin) {
-            if (name.trim().length < 2) {
-                errors.push('Name must be at least 2 characters long.');
-            }
+        if (!isLogin && name.trim().length < 2) {
+            errors.push('Name must be at least 2 characters long.');
         }
         if (password.length < 6) {
             errors.push('Password must be at least 6 characters long.');
@@ -54,6 +52,19 @@ export default function AuthContainer() {
             } else {
                 await signUp(email, password, name);
             }
+
+            const currentUser = useAuthStore.getState().user;
+            const userId = currentUser?._id;
+            const token = useAuthStore.getState().token;
+            if (currentUser && userId) {
+                const response = await fetch('/api/regions/findAll', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({userId, token})
+                });
+                const data = await response.json();
+                setRegions(data.data.mappedRegions);
+            }
             router.push('/dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');
@@ -70,7 +81,8 @@ export default function AuthContainer() {
                 </h2>
 
                 {error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 overflow-x-scroll">
+                    <div
+                        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 overflow-x-scroll">
                         {error}
                     </div>
                 )}

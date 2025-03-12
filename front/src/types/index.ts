@@ -9,7 +9,7 @@ export interface Geometry {
 }
 
 export interface User {
-    id: string;
+    _id: string;
     name: string;
     email: string;
     address?: string;
@@ -19,7 +19,7 @@ export interface User {
 }
 
 export interface Region {
-    id: string;
+    _id: string;
     name: string;
     location: Geometry;
     owner: User;
@@ -30,15 +30,4 @@ export interface Region {
 export interface Point {
     lat: number;
     lng: number;
-}
-
-export interface Region {
-    id: string;
-    name: string;
-    geometry: {
-        type: 'Polygon';
-        coordinates: Point[][];
-    };
-    createdAt: Date;
-    updatedAt: Date;
 }

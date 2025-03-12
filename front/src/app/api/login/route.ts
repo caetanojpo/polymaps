@@ -50,8 +50,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         );
         const userResponse = await userRequest.json();
         userResponse.data.token = loginData.data.token;
-
-        loginData.statusCode = returnResponse.statusCode;
         return NextResponse.json(userResponse, {
             headers: {
                 "Access-Control-Allow-Origin": "*",

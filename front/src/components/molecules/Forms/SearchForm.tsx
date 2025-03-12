@@ -72,7 +72,7 @@ export function SearchForm({onSearch, regions}: SearchFormProps) {
                     <div className="space-y-2">
                         {regions.map((region) => (
                             <div
-                                key={region.id}
+                                key={region._id}
                                 className="p-3 bg-gray-50 rounded-md"
                             >
                                 <div className="flex justify-between items-start">

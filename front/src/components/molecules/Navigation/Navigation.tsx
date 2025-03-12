@@ -5,8 +5,7 @@ import {Button} from "@/components/atoms/Buttons/Button";
 import {useRouter} from 'next/navigation';
 
 export function Navigation() {
-    const user = useAuthStore((state) => state.user);
-    const signOut = useAuthStore((state) => state.signOut);
+    const {user, signOut} = useAuthStore();
     const router = useRouter();
 
     const handleSignOut = () => {
