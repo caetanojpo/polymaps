@@ -1,6 +1,6 @@
+import AuthContainer from '@/components/organisms/AuthContainer';
 
-export default function Home() {
-    return (
-        <main></main>
-    );
+
+export default function HomePage() {
+    return <AuthContainer />;
 }
