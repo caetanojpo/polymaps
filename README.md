@@ -25,20 +25,21 @@ This monorepo organizes the two projects into separate folders for easy manageme
 - Full Type Safety: TypeScript end-to-end
 
 ## 📦 Tech Stack
-### Backend
+### Frontend
 - **Framework**: Next.js 15 (App Router)
 - **State Management**: Zustand
 - **Language**: TypeScript
 - **Testing**: Jest + Supertest
 - **Styling**: Tailwind CSS 4
 - **Architecture**: Atomic Design
-### Frontend
+### Backend
 - **Runtime**: Node.js
 - **Framework**: Express
 - **Database**: MongoDB (Mongoose ODM)
 - **Language**: TypeScript
 - **Testing**: Jest + Supertest
 - **Logging**: Winston
+- **Cache**: Redis
 - **Architecture**: Clean Architecture
 
 ## 🚀 Quick Start
@@ -106,6 +107,9 @@ LOG_LEVEL=info
 DB_URI=mongodb://admin:admin@localhost:27017/oz_test?authSource=admin
 DB_USER=admin
 DB_PASS=oz_test
+
+#Cache
+REDIS_URI=redis://localhost:6379
 
 # CORS allowed origins
 ALLOWED_ORIGINS=*
