@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Polymap Web
+[![React](https://img.shields.io/badge/React-18.x-blue)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-13.x-lightblue)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-pink)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 
-## Getting Started
+A modern geospatial management interface built with Next.js and Atomic Design architecture.
 
-First, run the development server:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a96044e3-3f8d-4d02-9856-75c292489c5b" width="400">
+</p>
 
+---
+
+## 📦 Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **State Management**: Zustand
+- **Language**: TypeScript
+- **Testing**: Jest + Supertest
+- **Styling**: Tailwind CSS 4
+- **Architecture**: Atomic Design
+
+---
+
+## ⚙️ Installation & Running
+
+### Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/caetanojpo/polymaps.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Access folder:
+```bash
+cd polymaps/front
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Install dependencies:
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Run the application:
+```bash
+npm run dev
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔧 Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env` file using the `.env.local` template. Replace placeholders with actual values:
+```bash
+NEXT_PUBLIC_DEV_URL=http://localhost:8000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📚 Pages & Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application has the following pages:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Login
+
+- **URL**: `/`
+- The landing page of the application with login to authenticate on the server.
+
+### 2. Dashboard
+
+- **URL**: `/dashboard`
+- The user's main dashboard that provides insights and actions based on the application data.
+
+---
+
+## 🧱 **Atomic Design in This Project**
+
+In this project, we've adopted the Atomic Design methodology to build a scalable and maintainable UI. The components are structured into five levels:
+
+- **Atoms**: Basic building blocks like buttons, inputs, and icons are designed as reusable components.
+- **Molecules**: Combinations of atoms, like form groups or card components, that are more complex yet still reusable.
+- **Organisms**: Combinations of molecules forming more complex UI structures, such as headers or product lists.
+- **Templates**: Page layouts formed by organisms, defining the structure without specific content.
+- **Pages**: Final instances of templates, populated with real content, ready for display.
+
+This approach ensures modularity, reusability, and consistency across the UI, making the project easy to scale and maintain.
+
+---
+
+## 📐 Architecture
+Application structure:
+``` bash
+src/
+├── app/
+│   ├── api/
+│   │   ├── login/
+│   │   ├── regions/
+│   │   ├── signup/
+├── dashboard/
+├── globals.css
+├── layout.tsx
+├── page.tsx
+│   ├── entities/
+│   ├── repositories/
+│   ├── exceptions/
+│   ├── types/
+├── components/
+│   ├── atoms/
+│   ├── molecules/
+│   ├── organisms/
+│   ├── templates/
+├── store/
+├── types/
+```
+
+## 🎉 Thank you for your interest!
+I really appreciate your time exploring my Web application. If you have any questions, feedback, or run into any issues, feel free to reach out! 🚀
+
+## 📬 Contact Information:
+- Email: caetanojpo@gmail.com
+- GitHub: https://github.com/caetanojpo
+- LinkedIn: https://www.linkedin.com/in/caetanojpo
+
+Looking forward to hearing from you!
