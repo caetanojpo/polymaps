@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
     experimental: {
         turbo: {
-            // Example: adding an alias and custom file extension
             resolveAlias: {
                 underscore: 'lodash',
             },
