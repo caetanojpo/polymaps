@@ -97,20 +97,21 @@ NEXT_PUBLIC_DEV_URL=http://localhost:8000
 ### API Environment (.env)
 Create a `.env` file using the `.env.example` template. Replace placeholders with actual values:
 ```bash
+# Server settings
 PORT=8000
 NODE_ENV=dev
 LOG_LEVEL=info
 
 # Database settings
-DB_URI=
-DB_USER=
-DB_PASS=
+DB_URI=mongodb://admin:admin@localhost:27017/oz_test?authSource=admin
+DB_USER=admin
+DB_PASS=oz_test
 
 # CORS allowed origins
 ALLOWED_ORIGINS=*
 
 #AUTH
-JWT_SECRET=
+JWT_SECRET="oz_test123"
 ```
 
 ## 🎉 Thank you for your interest!
