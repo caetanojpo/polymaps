@@ -7,7 +7,7 @@ import LoginForm from '@/components/molecules/Forms/LoginForm';
 
 export default function AuthContainer() {
     const router = useRouter();
-    const {signIn, signUp} = useAuthStore();
+    const {signIn, signUp, setUser, setToken} = useAuthStore();
     const {setRegions} = useRegionStore(); // Ensure fetchRegions accepts a user id
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
@@ -63,6 +63,11 @@ export default function AuthContainer() {
                     body: JSON.stringify({userId, token})
                 });
                 const data = await response.json();
+                if (data.message === "Invalid token") {
+                    setUser(null);
+                    setToken(null);
+                    router.push('/');
+                }
                 setRegions(data.data.mappedRegions);
             }
             router.push('/dashboard');

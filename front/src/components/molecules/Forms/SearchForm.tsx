@@ -66,30 +66,33 @@ export function SearchForm({onSearch, regions}: SearchFormProps) {
                 </Button>
             </div>
 
-            {regions.length > 0 && (
-                <div className="mt-6">
-                    <h3 className="text-md font-semibold mb-3">Search Results</h3>
-                    <div className="space-y-2">
-                        {regions.map((region) => (
-                            <div
-                                key={region._id}
-                                className="p-3 bg-gray-50 rounded-md"
-                            >
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <h4 className="font-medium">{region.name}</h4>
-                                        <p className="text-sm text-gray-500">
-                                            Owner: {region.owner.name}
-                                        </p>
-                                    </div>
-                                    <span className="text-xs text-gray-500">
+            {regions.length > 0 && (<>
+                    <h3 className="mt-6 text-[1.4rem] font-semibold mb-3">Search Results</h3>
+
+                    <div className=" max-h-[290px] overflow-y-scroll">
+
+                        <div className="space-y-2 ">
+                            {regions.map((region) => (
+                                <div
+                                    key={region._id}
+                                    className="p-3 bg-gray-50 rounded-md hover:bg-subprimary-100"
+                                >
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h4 className="font-medium">{region.name}</h4>
+                                            <p className="text-sm text-gray-500">
+                                                Owner: {region.owner.name}
+                                            </p>
+                                        </div>
+                                        <span className="text-xs text-gray-500">
                     {new Date(region.createdAt).toLocaleDateString()}
                   </span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </>
             )}
         </Card>
     );

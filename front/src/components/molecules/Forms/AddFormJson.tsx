@@ -8,17 +8,17 @@ interface AddRegionJsonFormProps {
     onSubmit: (name: string, coordinates: { latitude: number; longitude: number }[]) => Promise<void>;
 }
 
-const defaultJson = `{
-  "name": "Springfield Park",
-  "coordinates": [
-    [
-      [-122.431297, 37.773972],
-      [-122.431300, 37.773975],
-      [-122.431305, 37.773980],
-      [-122.431297, 37.773972]
+const defaultJson = JSON.stringify({
+    "name": "Springfield Park",
+    "coordinates": [
+        [
+            [-122.431297, 37.773972],
+            [-122.431300, 37.773975],
+            [-122.431305, 37.773980],
+            [-122.431297, 37.773972]
+        ]
     ]
-  ]
-}`;
+}, null, 2);
 
 export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
     const [jsonValue, setJsonValue] = useState(defaultJson);
@@ -26,11 +26,16 @@ export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
 
     const validateCoordinates = (coords: number[][]) => {
         if (!Array.isArray(coords) || coords.length !== 4) {
-            throw new Error('Exactly 4 points required (including closing point)');
+            throw new Error('Exactly 4 points required (3 unique + closing point)');
         }
 
         if (!coords.every(point => Array.isArray(point) && point.length === 2)) {
             throw new Error('Each point must be an array of [longitude, latitude]');
+        }
+
+        const uniquePoints = new Set(coords.slice(0, 3).map(p => p.join(',')));
+        if (uniquePoints.size < 3) {
+            throw new Error('First 3 points must be unique');
         }
 
         const [firstPoint, lastPoint] = [coords[0], coords[coords.length - 1]];
@@ -45,24 +50,28 @@ export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
 
         try {
             const data = JSON.parse(jsonValue);
+            console.log(data);
 
-            if (!data.name || typeof data.name !== 'string') {
-                throw new Error('Name is required and must be a string');
+            if (!data.name?.trim?.()) {
+                throw new Error('Name is required');
             }
 
             if (!Array.isArray(data.coordinates) || data.coordinates.length !== 1) {
-                throw new Error('Coordinates must be an array with exactly one polygon');
+                throw new Error('Coordinates must contain exactly one polygon array');
             }
 
             validateCoordinates(data.coordinates[0]);
 
-            const formattedCoordinates = data.coordinates[0].map(([longitude, latitude]: number[]) => ({
-                latitude,
-                longitude
-            }));
+            const formattedCoordinates = data.coordinates[0]
+                .slice(0, 3)
+                .map(([longitude, latitude]: number[]) => ({
+                    latitude,
+                    longitude
+                }));
 
-            await onSubmit(data.name, formattedCoordinates);
+            const finalCoordinates = [...formattedCoordinates, formattedCoordinates[0]];
 
+            await onSubmit(data.name, finalCoordinates);
             setJsonValue(defaultJson);
             setError(null);
         } catch (err) {
@@ -103,16 +112,16 @@ export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
                 </div>
 
                 <div className="bg-blue-50 p-4 rounded-md">
-                    <p className="text-[1.2rem] text-blue-700">
+                    <div className="text-[1.2rem] text-blue-700">
                         <strong>Format Requirements:</strong>
                         <ul className="list-disc ml-4 mt-2">
-                            <li>Name must be a string</li>
-                            <li>Coordinates must be an array with exactly one polygon</li>
-                            <li>Each polygon must have exactly 4 points (including closing point)</li>
-                            <li>Points format: [longitude, latitude]</li>
+                            <li><code>name</code> must be a string</li>
+                            <li><code>coordinates</code> must contain exactly one polygon array</li>
+                            <li>Each polygon must have exactly 4 points (3 unique + closing point)</li>
+                            <li>Points format: <code>[longitude, latitude]</code></li>
                             <li>Last point must match the first point</li>
                         </ul>
-                    </p>
+                    </div>
                 </div>
 
                 {error && (

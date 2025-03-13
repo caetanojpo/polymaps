@@ -1,10 +1,12 @@
 "use client"
-import React, { useState } from 'react';
-import { Navigation } from '@/components/molecules/Navigation/Navigation';
-import { SearchForm } from '@/components/molecules/Forms/SearchForm';
-import { AddRegionForm } from '@/components/molecules/Forms/AddForm';
-import { Region } from '@/types';
+import React, {useState} from 'react';
+import {Navigation} from '@/components/molecules/Navigation/Navigation';
+import {SearchForm} from '@/components/molecules/Forms/SearchForm';
+import {AddRegionForm} from '@/components/molecules/Forms/AddForm';
+import {Region} from '@/types';
 import {AddRegionJsonForm} from "@/components/molecules/Forms/AddFormJson";
+import {Card} from "@/components/atoms/Card/Card";
+import {RegionList} from "@/components/molecules/List/RegionList";
 
 interface DashboardTemplateProps {
     regions: Region[];
@@ -20,7 +22,7 @@ export function DashboardTemplate({
     const [formType, setFormType] = useState<'standard' | 'json'>('standard');
     return (
         <div className="min-h-screen bg-gray-200">
-            <Navigation />
+            <Navigation/>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-6">
@@ -50,9 +52,9 @@ export function DashboardTemplate({
                         </div>
 
                         {formType === 'standard' ? (
-                            <AddRegionForm onSubmit={onAddRegion} />
+                            <AddRegionForm onSubmit={onAddRegion}/>
                         ) : (
-                            <AddRegionJsonForm onSubmit={onAddRegion} />
+                            <AddRegionJsonForm onSubmit={onAddRegion}/>
                         )}
                     </div>
                     <div>
@@ -62,6 +64,7 @@ export function DashboardTemplate({
                         />
                     </div>
                 </div>
+                <RegionList regions={regions}/>
             </div>
         </div>
     );
