@@ -5,17 +5,18 @@ import {SearchForm} from '@/components/molecules/Forms/SearchForm';
 import {AddRegionForm} from '@/components/molecules/Forms/AddForm';
 import {Region} from '@/types';
 import {AddRegionJsonForm} from "@/components/molecules/Forms/AddFormJson";
-import {Card} from "@/components/atoms/Card/Card";
 import {RegionList} from "@/components/molecules/List/RegionList";
 
 interface DashboardTemplateProps {
     regions: Region[];
+    search: Region[];
     onSearch: (type: 'contains' | 'near', coordinates: { latitude: number; longitude: number }) => Promise<void>;
     onAddRegion: (name: string, coordinates: { latitude: number; longitude: number }[]) => Promise<void>;
 }
 
 export function DashboardTemplate({
                                       regions,
+                                      search,
                                       onSearch,
                                       onAddRegion,
                                   }: DashboardTemplateProps) {
@@ -60,7 +61,7 @@ export function DashboardTemplate({
                     <div>
                         <SearchForm
                             onSearch={onSearch}
-                            regions={regions}
+                            search={search}
                         />
                     </div>
                 </div>

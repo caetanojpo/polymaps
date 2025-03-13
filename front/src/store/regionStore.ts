@@ -4,8 +4,10 @@ import {Region} from '@/types';
 
 export interface RegionState {
     listOfRegions: Region[];
+    listSearch: Region[];
     loading: boolean;
     setRegions: (regions: Region[]) => void;
+    setSearch: (regions: Region[]) => void;
     fetchRegions: () => Promise<void>;
     addRegion: (region: Region) => void;
     removeRegion: (id: string) => void;
@@ -16,8 +18,10 @@ export const useRegionStore = create<RegionState>()(
     persist(
         (set, get) => ({
             listOfRegions: [],
+            listSearch: [],
             loading: false,
             setRegions: (regions: Region[]) => set({listOfRegions: regions}),
+            setSearch: (regions: Region[]) => set({listSearch: regions}),
             fetchRegions: async () => {
                 set({loading: true});
                 try {

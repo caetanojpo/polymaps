@@ -9,13 +9,13 @@ interface AddRegionJsonFormProps {
 }
 
 const defaultJson = JSON.stringify({
-    "name": "Springfield Park",
+    "name": "Sugarloaf Mountain",
     "coordinates": [
         [
-            [-122.431297, 37.773972],
-            [-122.431300, 37.773975],
-            [-122.431305, 37.773980],
-            [-122.431297, 37.773972]
+            [-43.163300, -22.950000],
+            [-43.162500, -22.948900],
+            [-43.159800, -22.949200],
+            [-43.163300, -22.950000],
         ]
     ]
 }, null, 2);

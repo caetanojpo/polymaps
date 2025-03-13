@@ -15,11 +15,11 @@ interface AddRegionFormProps {
 }
 
 export function AddRegionForm({onSubmit}: AddRegionFormProps) {
-    const [name, setName] = useState('');
+    const [name, setName] = useState('Sugarloaf Mountain');
     const [coordinates, setCoordinates] = useState<Coordinate[]>([
-        {latitude: 37.773972, longitude: -122.431297},
-        {latitude: 37.773975, longitude: -122.431300},
-        {latitude: 37.773980, longitude: -122.431305}
+        {latitude: -43.163300, longitude: -22.950000},
+        {latitude: -43.162500, longitude: -22.948900},
+        {latitude: -43.159800, longitude: -22.951500}
     ]);
     const [error, setError] = useState<string | null>(null);
 

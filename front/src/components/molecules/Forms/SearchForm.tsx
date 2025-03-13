@@ -8,10 +8,10 @@ import {Region} from '@/types';
 
 interface SearchFormProps {
     onSearch: (type: 'contains' | 'near', coordinates: { latitude: number; longitude: number }) => Promise<void>;
-    regions: Region[];
+    search: Region[];
 }
 
-export function SearchForm({onSearch, regions}: SearchFormProps) {
+export function SearchForm({onSearch, search}: SearchFormProps) {
     const [searchType, setSearchType] = useState<'contains' | 'near'>('contains');
     const [coordinates, setCoordinates] = useState({latitude: 0, longitude: 0});
 
@@ -66,13 +66,13 @@ export function SearchForm({onSearch, regions}: SearchFormProps) {
                 </Button>
             </div>
 
-            {regions.length > 0 && (<>
+            {search.length > 0 && (<>
                     <h3 className="mt-6 text-[1.4rem] font-semibold mb-3">Search Results</h3>
 
                     <div className=" max-h-[290px] overflow-y-scroll">
 
                         <div className="space-y-2 ">
-                            {regions.map((region) => (
+                            {search.map((region) => (
                                 <div
                                     key={region._id}
                                     className="p-3 bg-gray-50 rounded-md hover:bg-subprimary-100"
