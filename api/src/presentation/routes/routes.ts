@@ -3,6 +3,7 @@ import {UserController} from "../controllers/user.controller";
 import {AuthController} from "../controllers/auth.controller";
 import {authMiddleware} from "../../infrastructure/middlewares/auth.middleware";
 import {RegionController} from "../controllers/region.controller";
+import {cacheMiddleware} from "../../infrastructure/middlewares/cache.middleware";
 
 class Routes {
     public routes: Router;
@@ -22,14 +23,14 @@ class Routes {
 
     private configureUserRoutes(): void {
         this.routes.route('/users')
-            .get(authMiddleware, this.userController.findAll.bind(this.userController))
+            .get(authMiddleware, cacheMiddleware, this.userController.findAll.bind(this.userController))
             .post(this.userController.createUser.bind(this.userController));
         this.routes.route('/users/:id')
-            .get(authMiddleware, this.userController.findById.bind(this.userController))
+            .get(authMiddleware, cacheMiddleware, this.userController.findById.bind(this.userController))
             .put(authMiddleware, this.userController.updateUser.bind(this.userController))
             .delete(authMiddleware, this.userController.deleteUser.bind(this.userController))
         this.routes.route('/users/email/:email')
-            .get(authMiddleware, this.userController.findByEmail.bind(this.userController))
+            .get(authMiddleware, cacheMiddleware, this.userController.findByEmail.bind(this.userController))
     }
 
     private configureAuthRoutes(): void {
@@ -39,9 +40,9 @@ class Routes {
     private configureRegionRoutes(): void {
         this.routes.route('/regions')
             .post(authMiddleware, this.regionController.createRegion.bind(this.regionController))
-            .get(authMiddleware, this.regionController.findAll.bind(this.regionController));
+            .get(authMiddleware, cacheMiddleware, this.regionController.findAll.bind(this.regionController));
         this.routes.route('/regions/:id')
-            .get(authMiddleware, this.regionController.findById.bind(this.regionController))
+            .get(authMiddleware, cacheMiddleware, this.regionController.findById.bind(this.regionController))
             .put(authMiddleware, this.regionController.updateRegion.bind(this.regionController))
             .delete(authMiddleware, this.regionController.deleteRegion.bind(this.regionController))
         this.routes.route('/regions/containing-point')

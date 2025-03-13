@@ -9,4 +9,5 @@ export const ENV = {
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || "*",
     DB_URI: process.env.DB_URI || "mongodb://localhost:27017",
     JWT_SECRET: process.env.JWT_SECRET || "",
+    REDIS_URI: process.env.REDIS_URI || "redis://localhost:6379",
 };

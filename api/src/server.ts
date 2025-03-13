@@ -1,21 +1,25 @@
 import {logger} from "./config/logger";
 import {Application} from "express";
 import MongoConnection from "./infrastructure/database/mongo.connection";
+import RedisConnection from "./infrastructure/cache/redis.client";
 
 class Server {
     private app: Application;
     private readonly port: string;
     private database: MongoConnection;
+    private redis: RedisConnection;
 
     constructor(app: Application, port: string) {
         this.app = app;
         this.port = port;
         this.database = new MongoConnection();
+        this.redis = RedisConnection.getInstance();
     }
 
     public async start(): Promise<void> {
         try {
             await this.database.connect();
+            await this.redis.connect();
             const server = this.app.listen(this.port, () => {
                 logger.info(`Server is up and running on port ${this.port}`);
             });
@@ -48,6 +52,7 @@ class Server {
         server.close(async () => {
             logger.info('HTTP server successfully closed.');
             await this.database.shutdown();
+            await this.redis.shutdown();
             process.exit(0);
         });
 
