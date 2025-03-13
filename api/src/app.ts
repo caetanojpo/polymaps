@@ -8,6 +8,7 @@ import {swaggerSpec} from "./config/swagger/swagger";
 import swaggerUi from "swagger-ui-express";
 import i18n from "./config/i18n";
 import middleware from 'i18next-http-middleware';
+import {limiter} from "./utils/rate-limiter";
 
 class App {
     public app: Application;
@@ -40,7 +41,7 @@ class App {
     }
 
     private configureAPIRoutes(): void {
-        this.app.use('/api/v1', routes);
+        this.app.use('/api/v1', limiter, routes);
     }
 
     private configureErrorHandling(): void {
