@@ -15,7 +15,6 @@ export async function POST(request: Request): Promise<NextResponse> {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-
             }
         );
         const findAllResponse = await findAllRequest.json();

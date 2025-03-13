@@ -10,7 +10,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         longitude: longitude,
     };
 
-
     const url = !ownerId ? `api/v1/regions/near?maxDistance=${maxDistance}` : `api/v1/regions/near?maxDistance=${maxDistance}&ownerId=${ownerId}`;
 
     try {
