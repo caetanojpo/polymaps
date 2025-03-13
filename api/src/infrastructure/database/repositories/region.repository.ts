@@ -57,6 +57,7 @@ export class RegionRepository implements IRegionRepository {
                     $geoIntersects: {$geometry: point}
                 }
             }).populate('owner').exec();
+
             return regions.map((region) => RegionMapper.toDomainFromSchema(region));
         } catch (error) {
             throw new DatabaseException(
@@ -132,8 +133,7 @@ export class RegionRepository implements IRegionRepository {
             );
         }
     }
-
-
+    
     public async delete(id: string): Promise<void> {
         try {
             await this.collection.findByIdAndDelete(id).exec();

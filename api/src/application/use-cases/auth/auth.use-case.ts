@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
-import { UserRepository } from "../../../infrastructure/database/repositories/user.repository";
-import { logger } from "../../../config/logger";
-import { JwtService } from "../../../infrastructure/services/jwt.service";
-import { LoginResponseDTO } from "../../dtos/auth/login-response.dto";
-import { LoginException } from "../../../domain/exceptions/login.exception";
+import {UserRepository} from "../../../infrastructure/database/repositories/user.repository";
+import {logger} from "../../../config/logger";
+import {JwtService} from "../../../infrastructure/services/jwt.service";
+import {LoginResponseDTO} from "../../dtos/auth/login-response.dto";
+import {LoginException} from "../../../domain/exceptions/login.exception";
 
 
 export class AuthUseCase {
@@ -17,7 +17,7 @@ export class AuthUseCase {
     }
 
     public async executeHashPassword(password: string): Promise<string> {
-        logger.info("Hashing password with salt rounds: {}", this.saltRounds);
+        logger.logFormatted("info","Hashing password with salt rounds: {}", this.saltRounds);
         return await bcrypt.hash(password, this.saltRounds);
     }
 
@@ -36,10 +36,10 @@ export class AuthUseCase {
     }
 
     public async executeLogin(email: string, password: string): Promise<LoginResponseDTO> {
-        logger.info("Initiating login process for user with email: {}", email);
+        logger.logFormatted("info","Initiating login process for user with email: {}", email);
         const user = await this.userRepository.findByEmail(email);
         if (!user?._id || !user.isActive) {
-            logger.warn("Login attempt failed for user {}: User not found or inactive", email);
+            logger.logFormatted("warn","Login attempt failed for user {}: User not found or inactive", email);
             throw new LoginException("Invalid credentials");
         }
 
@@ -49,13 +49,13 @@ export class AuthUseCase {
         );
 
         if (!isMatch) {
-            logger.warn("Login attempt failed for user {}: Invalid password", email);
+            logger.logFormatted("warn","Login attempt failed for user {}: Invalid password", email);
             throw new LoginException("Invalid credentials");
         }
 
-        logger.info("Password matched for user {}. Generating JWT token.", email);
+        logger.logFormatted("info", "Password matched for user {}. Generating JWT token.", email);
         const token = this.jwtService.generateToken(user._id);
-        logger.info("Token successfully generated for user {}: {}", email, token);
+        logger.logFormatted("info", "Token successfully generated for user {}: {}", email, token);
 
         return new LoginResponseDTO(user._id, token);
     }

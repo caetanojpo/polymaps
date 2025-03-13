@@ -25,7 +25,6 @@ class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
         this.app.use(middleware.handle(i18n));
-
     }
 
     private configureCoreRoutes(): void {
@@ -45,7 +44,6 @@ class App {
     }
 
     private configureErrorHandling(): void {
-
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             logger.error(`Route not found: ${req.method} ${req.originalUrl}`);
             next({

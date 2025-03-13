@@ -1,7 +1,7 @@
-import { DeleteUserUseCase } from "../../../../src/application/use-cases/users/delete-user.use-case";
-import { UserRepository } from "../../../../src/infrastructure/database/repositories/user.repository";
-import { EntityNotFoundException } from "../../../../src/domain/exceptions/entity-not-found.exception";
-import { User } from "../../../../src/domain/models/user.model";
+import {DeleteUserUseCase} from "../../../../src/application/use-cases/users/delete-user.use-case";
+import {UserRepository} from "../../../../src/infrastructure/database/repositories/user.repository";
+import {EntityNotFoundException} from "../../../../src/domain/exceptions/entity-not-found.exception";
+import {User} from "../../../../src/domain/models/user.model";
 
 jest.mock("../../../../src/infrastructure/database/repositories/user.repository");
 
@@ -21,7 +21,7 @@ describe("DeleteUserUseCase", () => {
 
     it("should deactivate a user successfully", async () => {
         const id = "123";
-        const user: User = {  name: "Test User", email: "test@example.com", hashedPassword:"Test123!", isActive: true };
+        const user: User = {name: "Test User", email: "test@example.com", hashedPassword: "Test123!", isActive: true};
 
         userRepository.findById.mockResolvedValue(user);
         userRepository.update.mockResolvedValue(user);
@@ -30,7 +30,7 @@ describe("DeleteUserUseCase", () => {
 
         expect(userRepository.findById).toHaveBeenCalledWith(id);
         expect(user.isActive).toBe(false);
-        expect(userRepository.update).toHaveBeenCalledWith(id, expect.objectContaining({ isActive: false }));
+        expect(userRepository.update).toHaveBeenCalledWith(id, expect.objectContaining({isActive: false}));
     });
 
     it("should throw EntityNotFoundException if user does not exist when deactivating", async () => {
@@ -42,7 +42,7 @@ describe("DeleteUserUseCase", () => {
 
     it("should permanently delete a user successfully", async () => {
         const id = "123";
-        const user: User = { name: "Test User",hashedPassword:"Test123!", email: "test@example.com", isActive: true };
+        const user: User = {name: "Test User", hashedPassword: "Test123!", email: "test@example.com", isActive: true};
 
         userRepository.findById.mockResolvedValue(user);
         userRepository.delete.mockResolvedValue();

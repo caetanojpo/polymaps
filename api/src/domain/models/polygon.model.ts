@@ -9,8 +9,7 @@ export class PolygonModelImpl implements Polygon {
 
     @Expose()
     coordinates!: LinearRing[];
-
-
+    
     constructor(type: "Polygon", coordinates: LinearRing[]) {
         this.type = type;
         this.coordinates = coordinates;

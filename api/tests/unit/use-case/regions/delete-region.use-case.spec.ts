@@ -1,7 +1,6 @@
 import {DeleteRegionUseCase} from "../../../../src/application/use-cases/region/delete-region.use-case";
 import {IRegionRepository} from "../../../../src/domain/repositories/iregion.repository";
 import {EntityNotFoundException} from "../../../../src/domain/exceptions/entity-not-found.exception";
-import {GeoJSON} from "../../../../src/domain/models/geo-json.model";
 import {regionMock} from "../../../mocks/region/region.mock";
 
 

@@ -1,4 +1,3 @@
-import {Coordinates} from "../types/coordinates.type";
 import {User} from "./user.model";
 import {Expose} from "class-transformer";
 import {PolygonModelImpl} from "./polygon.model";

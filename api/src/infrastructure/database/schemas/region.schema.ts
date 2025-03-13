@@ -1,4 +1,4 @@
-import {prop, getModelForClass, index, Ref, modelOptions, plugin} from '@typegoose/typegoose';
+import {prop, getModelForClass, index, Ref, modelOptions} from '@typegoose/typegoose';
 import {BaseSchema} from "./base.schema";
 import {UserSchema} from "./user.schema";
 import {PolygonSchema} from "./polygon.schema";
@@ -25,6 +25,5 @@ export class RegionSchema extends BaseSchema {
     @prop({default: () => new Date()})
     public updatedAt!: Date;
 }
-
 
 export const RegionModel = getModelForClass(RegionSchema);

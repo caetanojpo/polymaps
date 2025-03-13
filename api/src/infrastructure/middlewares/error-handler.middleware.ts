@@ -31,6 +31,14 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
             statusCode = STATUS_CODE.BAD_REQUEST;
             code = "COORDINATES_ERROR";
             break;
+        case "LoginException":
+            statusCode = STATUS_CODE.UNAUTHORIZED;
+            code = "LOGIN_ERROR";
+            break;
+        case "RegionException":
+            statusCode = STATUS_CODE.BAD_REQUEST;
+            code = "REGION_ERROR";
+            break;
         default:
             code = code || error.errorCode || "UNKNOWN_ERROR";
     }

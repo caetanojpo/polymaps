@@ -1,5 +1,5 @@
 import {
-    IsEmail, IsNotEmpty, IsObject,
+    IsEmail, IsObject,
     IsOptional,
     IsString,
     Matches,

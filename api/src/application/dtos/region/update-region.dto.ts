@@ -1,6 +1,4 @@
-import { IsOptional, IsArray, IsString, IsObject, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
-import { User } from "../../../domain/models/user.model";
+import { IsOptional, IsArray, IsString } from "class-validator";
 import {GeoJSON} from "../../../domain/models/geo-json.model";
 import LinearRing = GeoJSON.LinearRing;
 

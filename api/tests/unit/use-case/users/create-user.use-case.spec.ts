@@ -54,7 +54,7 @@ describe("CreateUserUseCase", () => {
         };
 
         geoLocationUseCase.executeUserValidation.mockImplementation(async (user) => {
-            user.coordinates = { latitude: 12.34, longitude: 56.78 };
+            user.coordinates = {latitude: 12.34, longitude: 56.78};
         });
 
         userRepository.save.mockResolvedValue(user);
@@ -71,7 +71,7 @@ describe("CreateUserUseCase", () => {
         const dto: CreateUserDTO = {email: "test@test.com", name: "test", password: "password123"};
         authUseCase.executeHashPassword.mockResolvedValue("hashedPassword123");
         geoLocationUseCase.executeUserValidation.mockImplementation(async (user) => {
-            user.coordinates = { latitude: 12.34, longitude: 56.78 };
+            user.coordinates = {latitude: 12.34, longitude: 56.78};
         });
 
 
@@ -97,7 +97,7 @@ describe("CreateUserUseCase", () => {
         };
 
         geoLocationUseCase.executeUserValidation.mockImplementation(async (user) => {
-            user.coordinates = { latitude: 12.34, longitude: 56.78 };
+            user.coordinates = {latitude: 12.34, longitude: 56.78};
         });
 
         userRepository.save.mockResolvedValue(user);
@@ -109,7 +109,7 @@ describe("CreateUserUseCase", () => {
     });
 
     it("should throw an error if password hashing fails", async () => {
-        const dto: CreateUserDTO = {email: "test@test.com", name:"test", password: "password123"};
+        const dto: CreateUserDTO = {email: "test@test.com", name: "test", password: "password123"};
         authUseCase.executeHashPassword.mockRejectedValue(new Error("Hashing failed"));
 
         await expect(createUserUseCase.execute(dto)).rejects.toThrow("Hashing failed");
@@ -126,7 +126,7 @@ describe("CreateUserUseCase", () => {
         authUseCase.executeHashPassword.mockResolvedValue("hashedPassword123");
 
         geoLocationUseCase.executeUserValidation.mockImplementation(async (user) => {
-            user.coordinates = { latitude: 12.34, longitude: 56.78 };
+            user.coordinates = {latitude: 12.34, longitude: 56.78};
         });
 
         userRepository.save.mockResolvedValue({name: dto.name, email: dto.email, hashedPassword: "hashedPassword123"});

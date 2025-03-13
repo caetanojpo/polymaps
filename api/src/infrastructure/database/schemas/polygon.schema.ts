@@ -1,8 +1,6 @@
-import {prop, Ref} from "@typegoose/typegoose";
+import {prop} from "@typegoose/typegoose";
 import {Expose} from "class-transformer";
-import {GeoJSON} from "../../../domain/models/geo-json.model";
-import Polygon = GeoJSON.Polygon;
-import LinearRing = GeoJSON.LinearRing;
+
 
 export class PolygonSchema {
     @Expose()

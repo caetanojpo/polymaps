@@ -21,8 +21,7 @@ export class User {
     public readonly createdAt?: Date;
     @Expose()
     public updatedAt?: Date;
-
-
+    
     constructor(name: string, email: string, hashedPassword: string, id: string, address?: string, coordinates?: Coordinates, isActive?: boolean, createdAt?: Date, updatedAt?: Date) {
         this.name = name;
         this.email = email;

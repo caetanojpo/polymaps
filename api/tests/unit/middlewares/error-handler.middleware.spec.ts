@@ -4,7 +4,6 @@ import {errorHandler} from "../../../src/infrastructure/middlewares/error-handle
 import {logger} from "../../../src/config/logger";
 import {ApiResponse} from "../../../src/utils/api-response";
 
-
 jest.mock("../../../src/config/logger", () => ({
     logger: {
         info: jest.fn(),

@@ -1,6 +1,6 @@
-import { validateSync } from 'class-validator';
-import { GeometryValidation } from '../../../src/infrastructure/validators/geometry.validator';
-import { logger } from '../../../src/config/logger';
+import {validateSync} from 'class-validator';
+import {GeometryValidation} from '../../../src/infrastructure/validators/geometry.validator';
+import {logger} from '../../../src/config/logger';
 
 class DummyDto {
     @GeometryValidation()

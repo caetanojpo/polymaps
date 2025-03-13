@@ -4,7 +4,6 @@ import {UserRepository} from "../../../src/infrastructure/database/repositories/
 import {UserModel} from "../../../src/infrastructure/database/schemas/user.schema";
 import {User} from "../../../src/domain/models/user.model";
 
-
 describe('UserRepository', () => {
     let mongoServer: MongoMemoryServer;
     let userRepository: UserRepository;

@@ -54,7 +54,7 @@ describe("FindUserUseCase", () => {
     it("should return all users successfully", async () => {
         const users: User[] = [
             {email: "user1@example.com", name: "User One"},
-            { email: "user2@example.com", name: "User Two"}
+            {email: "user2@example.com", name: "User Two"}
         ] as User[];
         userRepository.findAll.mockResolvedValue(users);
 

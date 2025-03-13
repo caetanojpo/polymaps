@@ -42,7 +42,6 @@ export class RegionController {
             logger.info("Creating new region", {regionData});
             const createdRegion = await this.create.execute(regionData);
 
-
             logger.info("Region created successfully", {regionId: createdRegion?._id});
             return res.status(STATUS_CODE.CREATED).json(ApiResponse.success(req.t('region.created'), {id: createdRegion?._id}));
         } catch (error) {
@@ -98,7 +97,6 @@ export class RegionController {
 
             logger.info("Regions containing point found", {regionsCount: regions.length, coordinates});
 
-
             return res.status(STATUS_CODE.OK).json(ApiResponse.success(req.t('regions.containing_point'), {
                 regionsCount: regions.length,
                 sharedPoint: regionData,
@@ -124,7 +122,6 @@ export class RegionController {
 
             const mappedRegions = regions.map(region => RegionMapper.toRegionResponseFromDomain(region!));
             logger.info("Regions near point found", {regionsCount: regions.length, coordinates, maxDistance, ownerId});
-
 
             return res.status(STATUS_CODE.OK).json(ApiResponse.success(req.t('regions.near_point'), {
                 regionsCount: regions.length,
@@ -152,7 +149,6 @@ export class RegionController {
 
             logger.info("Region updated successfully", {regionId: id});
             return res.status(STATUS_CODE.NO_CONTENT).send();
-            ;
         } catch (error) {
             logger.error("Error occurred while updating region", {error});
             next(error);
