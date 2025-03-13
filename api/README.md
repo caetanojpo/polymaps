@@ -1,82 +1,298 @@
-# OZmap Challenge: Construindo a Geolocalização do Futuro
+# Polymap API
 
-Olá desenvolvedor(a)! Bem-vindo(a) ao Desafio Técnico do OZmap. Este é um projeto que simula um cenário real de nossa empresa, onde você irá desempenhar um papel crucial ao desenvolver uma API RESTful robusta para gerenciar usuários e localizações. Estamos muito animados para ver sua abordagem e solução!
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-lightgrey)](https://expressjs.com/)
+[![Mongoose](https://img.shields.io/badge/Mongoose-7.x-red)](https://mongoosejs.com/)
 
-## 🌍 **Visão Geral**
+A REST API for managing geospatial data, built with Node.js, TypeScript and Clean Architecture.
 
-Em um mundo conectado e globalizado, a geolocalização se torna cada vez mais essencial. E aqui no OZmap, buscamos sempre otimizar e melhorar nossos sistemas. Assim, você encontrará um protótipo que precisa de sua experiência para ser corrigido, melhorado e levado ao próximo nível.
-
-## 🛠 **Especificações Técnicas**
-
-- **Node.js**: Versão 20 ou superior.
-- **Banco de Dados**: Mongo 7+.
-- **ORM**: Mongoose / Typegoose.
-- **Linguagem**: Typescript.
-- **Formatação e Linting**: Eslint + prettier.
-- **Comunicação com MongoDB**: Deve ser feita via container.
-
-## 🔍 **Funcionalidades Esperadas**
-
-### Usuários
-- **CRUD** completo para usuários.
-- Cada usuário deve ter nome, email, endereço e coordenadas.
-- Na criação, o usuário pode fornecer endereço ou coordenadas. Haverá erro caso forneça ambos ou nenhum.
-- Uso de serviço de geolocalização para resolver endereço ↔ coordenadas.
-- Atualização de endereço ou coordenadas deve seguir a mesma lógica.
-
-### Regiões
-- **CRUD** completo para regiões.
-- Uma região é definida como um polígono em GeoJSON, um formato padrão para representar formas geográficas. Cada região tem um nome, um conjunto de coordenadas que formam o polígono, e um usuário que será o dono da região.
-- Listar regiões contendo um ponto específico.
-- Listar regiões a uma certa distância de um ponto, com opção de filtrar regiões não pertencentes ao usuário que fez a requisição.
-- Exemplo de um polígono simples em GeoJSON:
-  ```json
-  {
-    "type": "Polygon",
-    "coordinates": [
-      [
-        [longitude1, latitude1],
-        [longitude2, latitude2],
-        [longitude3, latitude3],
-        [longitude1, latitude1] // Fecha o polígono
-      ]
-    ]
-  }
-  ```
-
-### Testes
-- Unitários e de integração.
-
-## 🌟 **Diferenciais**
-
-- Autenticação não é requisito, podendo então o usuário ser fornecido junto do corpo da requisição. Caso implemente autenticação, o usuário deve ser obtido a partir do token.
-- Interface básica de usuário.
-- Documentação completa da API.
-- Internacionalização.
-- Cobertura de código.
-- Utilização de mongo session
-
-## ⚖ **Critérios de Avaliação**
-
-1. Organização e clareza do código.
-2. Estruturação do projeto.
-3. Qualidade e eficiência do código.
-4. Cobertura e qualidade de testes.
-5. Pontos diferenciais citados acima.
-6. Tempo de entrega (será considerado apenas o cumprimento do prazo, sem distinção entre entregas feitas no primeiro ou no último dia, com ênfase na qualidade da entrega).
-7. Padronização e clareza das mensagens de erro.
-8. Organização dos commits.
-9. Implementação de logs.
-10. Adesão às boas práticas de API RESTful.
-
-## 🚀 **Entrega**
-
-1. Crie um repositório público com a base desse código.
-2. Crie uma branch para realizar o seu trabalho.
-3. Ao finalizar, faça um pull request para a branch `main` do seu repositório.
-4. Envie um email para `rh@ozmap.com.br` informando que o teste foi concluído.
-5. Aguarde nosso feedback.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a96044e3-3f8d-4d02-9856-75c292489c5b" width="400">
+</p>
 
 ---
 
-Estamos ansiosos para ver sua implementação e criatividade em ação! Boa sorte e que a força do código esteja com você! 🚀
+## 📦 Tech Stack
+
+- **Runtime**: Node.js
+- **Framework**: Express
+- **Database**: MongoDB (Mongoose ODM)
+- **Language**: TypeScript
+- **Testing**: Jest + Supertest
+- **Logging**: Winston
+- **Architecture**: Clean Architecture
+
+---
+
+## ⚙️ Installation & Running
+
+### Clone the repository:
+```bash
+git clone https://github.com/caetanojpo/polymaps.git
+```
+
+### Access folder:
+```bash
+cd polymaps/api
+```
+
+### Install dependencies:
+```bash
+npm install
+```
+
+### Docker:
+If you wish, you can use the docker-compose file that is already set in the project:
+```bash
+docker-compose up -d
+```
+❗ You will need to configure the DB connection string in the `.env` file.
+
+### Run the application:
+```bash
+npm run dev
+```
+
+---
+
+## 🔧 Configuration
+
+Create a `.env` file using the `.env.example` template. Replace placeholders with actual values:
+```bash
+PORT=8000
+NODE_ENV=dev
+LOG_LEVEL=info
+
+# Database settings
+DB_URI=
+DB_USER=
+DB_PASS=
+
+# CORS allowed origins
+ALLOWED_ORIGINS=*
+
+#AUTH
+JWT_SECRET=
+```
+
+---
+
+## 📚 API Endpoints
+
+### 1. Authentication
+#### Base URL: `/api/v1/login`
+
+- **POST** `/api/v1/login` - User login - ❌ No Authentication required
+
+  Body Example:
+  ``` json
+  {
+      "email": "test@test.com",
+      "password": "Test123!"
+  }
+  ```
+
+### 2. Users
+#### Base URL: `/users`
+
+- **POST** `/api/v1//users` - Create a new user - ❌ No Authentication required
+
+  Body Example:
+  ``` json
+  {
+      "name": "User Test",
+      "email": "test@test.com",
+      "password": "Test123!",
+      "address": "Rio Brilhante, Região Geográfica Imediata de Dourados, Região Geográfica Intermediária de Dourados, Mato Grosso do Sul, Região Centro-Oeste, Brasil"
+  }
+  ```
+  
+- **GET** `/api/v1//users/:id` - Get user details by ID - ✅ Requires Authentication
+  
+- **GET** `/api/v1//users/email` - Get user details by Email - ✅ Requires Authentication
+  
+- **GET** `/api/v1//users` - Get all users - ✅ Requires Authentication
+  
+- **PUT** `/api/v1//users/:id` - Update user details  ✅ Requires Authentication
+
+  Body Example:
+  ``` json
+  {
+      "name": "tester",
+      "address": "Rio Brilhante, Região Geográfica Imediata de Dourados, Região Geográfica Intermediária de Dourados, Mato Grosso do Sul, Região Centro-Oeste, Brasil"
+  }
+  ```
+  
+- **DELETE** `/api/v1//users/:id` - Delete user  ✅ Requires Authentication
+  - Can have query hardDelete (boolean) `/api/v1//users/:id?hardDelete=false`
+
+### 3. Regions
+#### Base URL: `/api/v1/regions`
+
+- **POST** `/api/v1/regions` - Save a new region  ✅ Requires Authentication
+
+  Body Example:
+  ``` json
+  {
+      "name": "Springfield Park",
+      "coordinates": [
+          [
+              [
+                  -122.431297,
+                  37.773972
+              ],
+              [
+                  -122.431300,
+                  37.773975
+              ],
+              [
+                  -122.431305,
+                  37.773980
+              ],
+              [
+                  -122.431297,
+                  37.773972
+              ]
+          ]
+      ],
+      "owner": "67d2dcad534545aeb6ee7324"
+  }
+  ```
+  
+- **GET** `/api/v1/regions/:id` - Get region details  ✅ Requires Authentication
+  
+- **GET** `/api/v1/regions` - Get all regions  ✅ Requires Authentication
+  - Can have query ownerId(string) to filter all regions from a user `/api/v1/regions?ownerId=67cf53eb9a14fd0f65e9496a`
+    
+- **POST** `/api/v1/regions/containing-point` - List all regions containg the informed point -  ✅ Requires Authentication
+
+  Body Example:
+  ``` json
+  {
+      "latitude":  -73.965355,
+      "longitude": 40.782865
+  }
+  ```
+  
+- **POST** `/api/v1/regions/near` - List all regions near the informed point -  ✅ Requires Authentication
+  - Can have query maxDistance(number) to set the distance for searching reagion `/api/v1/regions/near?maxDistance=5000`
+  - Can have query ownerId(string) to filter all regions from a user  `api/v1/regions/near?maxDistance=5000&ownerId=67cf6230187563f281e9496a`
+  
+  Body Example:
+  ``` json
+  {
+      "latitude":  -73.965355,
+      "longitude": 40.782865
+  }
+  ```
+    
+- **PUT** `/api/v1/regions/:id` - Update region data  ✅ Requires Authentication
+
+  Body Example:
+  ``` json
+  {
+      "name": "Springfield Park Updated",
+      "coordinates": [
+          [
+              [
+                  -73.965355,
+                  40.782865
+              ],
+              [
+                  -73.965760,
+                  40.783118
+              ],
+              [
+                  -73.965370,
+                  40.783375
+              ],
+              [
+                  -73.965355,
+                  40.782865
+              ]
+          ]
+      ]
+  }
+  ```
+  
+- **DELETE** `/api/v1/regions/:id` - Delete a region  ✅ Requires Authentication
+  - Can have query hardDelete (boolean) `/api/v1//users/:id?hardDelete=false`
+    
+---
+
+## 🧪 Testing
+
+Run unit tests with Jest and Supertest:
+```bash
+npm test
+```
+
+## 📐 Architecture
+Application structure:
+``` bash
+src/
+├── application/
+│   ├── dtos/
+│   ├── use-cases/
+├── config/
+│   ├── locales/
+│   ├── swagger/
+├── domain/
+│   ├── entities/
+│   ├── repositories/
+│   ├── exceptions/
+│   ├── types/
+├── infrastructure/
+│   ├── database/
+│   │   ├── repositories/
+│   │   ├── schemas/
+│   ├── mappers/
+│   ├── middlewares/
+│   ├── services/
+│   ├── validators/
+├── presentation/
+│   ├── controllers/
+│   ├── routes/
+├── utils/
+tests/
+├── integration/
+├── mocks/
+├── unit/
+│   ├── controller/
+│   ├── middlewares/
+│   ├── repository/
+│   ├── services/
+│   ├── use-case/
+│   ├── validators/
+app.ts
+index.ts
+server.ts
+docker-compose.yaml
+```
+
+## 📚 Documentation
+Interactive Swagger:
+``` bash
+http://localhost:8000/docs/#/
+```
+Postman Collection:
+
+You can access it directly from my drive:
+
+```
+https://drive.google.com/drive/folders/1lFwFZmqbQq1Zpypab4zF8njVtQFWcQfj?usp=sharing
+```
+
+---
+
+## 🎉 Thank you for your interest!
+I really appreciate your time exploring my API. If you have any questions, feedback, or run into any issues, feel free to reach out! 🚀
+
+## 📬 Contact Information:
+- Email: caetanojpo@gmail.com
+- GitHub: https://github.com/caetanojpo
+- LinkedIn: https://www.linkedin.com/in/caetanojpo
+
+Looking forward to hearing from you!
+
