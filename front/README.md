@@ -65,10 +65,15 @@ The application has the following pages:
 - **URL**: `/`
 - The landing page of the application with login to authenticate on the server.
 
+![image](https://github.com/user-attachments/assets/6f2bb261-6d72-48cc-8f9a-90d512375a21)
+
+
 ### 2. Dashboard
 
 - **URL**: `/dashboard`
 - The user's main dashboard that provides insights and actions based on the application data.
+
+![image](https://github.com/user-attachments/assets/c93d27ac-e207-43c4-ab57-dfa65111162b)
 
 ---
 
