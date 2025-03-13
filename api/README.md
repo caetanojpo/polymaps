@@ -4,6 +4,9 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/Express-4.x-lightgrey)](https://expressjs.com/)
 [![Mongoose](https://img.shields.io/badge/Mongoose-7.x-red)](https://mongoosejs.com/)
+[![Typegoose](https://img.shields.io/badge/Typegoose-7.x-blue)](https://typegoose.github.io/typegoose/)
+[![Redis](https://img.shields.io/badge/Redis-6.x-brightred)](https://redis.io/)
+
 
 A REST API for managing geospatial data, built with Node.js, TypeScript and Clean Architecture.
 
@@ -20,6 +23,7 @@ A REST API for managing geospatial data, built with Node.js, TypeScript and Clea
 - **Database**: MongoDB (Mongoose ODM)
 - **Language**: TypeScript
 - **Testing**: Jest + Supertest
+- **Cache**: Redis
 - **Logging**: Winston
 - **Architecture**: Clean Architecture
 
@@ -42,16 +46,16 @@ cd polymaps/api
 npm install
 ```
 
-### Docker:
-If you wish, you can use the docker-compose file that is already set in the project:
-```bash
-docker-compose up -d
-```
 ❗ You will need to configure the DB connection string in the `.env` file.
 
 ### Run the application:
 ```bash
 npm run dev
+```
+The npm run dev command will automatically start the application along with the Docker containers using docker-compose up -d.
+Alternatively, if you prefer, you can manually run the Docker containers with:
+```bash
+docker-compose up -d
 ```
 
 ---
@@ -79,6 +83,29 @@ JWT_SECRET="oz_test123"
 
 ---
 
+## 🧪 Testing
+
+Run unit tests with Jest and Supertest:
+```bash
+npm test
+```
+
+---
+
+## 📚 Documentation
+Interactive Swagger:
+``` bash
+http://localhost:8000/docs/#/
+```
+Postman Collection:
+
+You can access it directly from my drive:
+
+```
+https://drive.google.com/drive/folders/1lFwFZmqbQq1Zpypab4zF8njVtQFWcQfj?usp=sharing
+```
+
+---
 ## 📚 API Endpoints
 
 ### 1. Authentication
@@ -222,13 +249,6 @@ JWT_SECRET="oz_test123"
     
 ---
 
-## 🧪 Testing
-
-Run unit tests with Jest and Supertest:
-```bash
-npm test
-```
-
 ## 📐 Architecture
 Application structure:
 ``` bash
@@ -272,19 +292,56 @@ server.ts
 docker-compose.yaml
 ```
 
-## 📚 Documentation
-Interactive Swagger:
-``` bash
-http://localhost:8000/docs/#/
-```
-Postman Collection:
+---
 
-You can access it directly from my drive:
+### 🧑‍💻 Redis Cache
+Redis is used in the Polymap API for caching frequently requested data, improving response time and reducing the load on the database.
 
-```
-https://drive.google.com/drive/folders/1lFwFZmqbQq1Zpypab4zF8njVtQFWcQfj?usp=sharing
+Example usage:
+```typescript
+export async function cacheMiddleware(req: Request, res: Response, next: NextFunction) {
+    const key = `__express__${req.originalUrl}`;
+
+    try {
+        const cachedData = await redisClient.get(key);
+
+        if (cachedData) {
+            res.send(JSON.parse(cachedData));
+            return;
+        } else {
+            const originalSend = res.send.bind(res);
+
+            res.send = (body: any): Response => {
+                redisClient.set(key, JSON.stringify(body), { EX: 60 }).catch(console.error);
+                return originalSend(body);
+            };
+
+            next();
+        }
+    } catch (err) {
+        console.error("Cache middleware error:", err);
+        next();
+    }
+}
 ```
 
+---
+
+## ⚙️ Additional Features
+### Rate Limiting
+To prevent abuse, the API uses a Redis-based rate limiter that restricts the number of requests per IP within a defined time window. This ensures fair usage and protects the server from overload.
+
+### Graceful Shutdown
+The API implements graceful shutdown, allowing active requests to complete before the server shuts down, minimizing disruptions during restarts or deployments.
+
+### Clean Architecture
+The API follows Clean Architecture, separating the application into layers for better maintainability and scalability:
+
+- Presentation Layer: Manages HTTP requests and responses.
+- Domain Layer: Contains core business logic and entities.
+- Application Layer: Orchestrates use cases and business rules.
+- Infrastructure Layer: Handles external systems like databases and caching (Redis).
+- This structure ensures flexibility, testability, and ease of scaling.
 ---
 
 ## 🎉 Thank you for your interest!
