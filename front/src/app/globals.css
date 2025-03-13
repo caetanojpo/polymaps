@@ -11,16 +11,19 @@ input:focus {
     height: 8px;
 }
 
-/* Customize scrollbar track and thumb for Chrome, Safari, and Opera */
+/* Customize scrollbar track for Chrome, Safari, and Opera */
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #131313;
 }
 
+/* Customize scrollbar thumb for Chrome, Safari, and Opera */
 ::-webkit-scrollbar-thumb {
-    background-color: var(--primary); /* scrollbar thumb color */
+    background-color: #00d256;
     border-radius: 3px;
 }
 
+
 html {
     font-size: 62.5%;
+    overflow-x: hidden;
 }
