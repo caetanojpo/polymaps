@@ -8,7 +8,9 @@ export default {
     ],
     theme: {
         extend: {
-            backgroundImage: {},
+            backgroundImage: {
+                bg: "url(/map.png)"
+            },
             colors: {
                 primary: "#00d256",
                 secondary: "#fff",

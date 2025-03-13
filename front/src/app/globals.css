@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwindcss";
 @config "../../tailwind.config.ts";
 
 input:focus {
@@ -22,8 +23,14 @@ input:focus {
     border-radius: 3px;
 }
 
-
 html {
     font-size: 62.5%;
     overflow-x: hidden;
+}
+
+.mapBg {
+    background-image: url('../../public/map.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }

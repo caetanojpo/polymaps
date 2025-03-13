@@ -81,7 +81,7 @@ export default function AuthContainer() {
     };
 
     return (
-        <div className="h-screen w-screen min-h-screen bg-dark flex items-center justify-center">
+        <div className="h-screen w-screen min-h-screen bg-dark flex items-center justify-center mapBg">
             <div className="bg-secondary p-8 rounded-lg shadow-md w-full max-w-xl">
                 <h2 className="text-[2rem] text-dark font-bold mb-6 text-center">
                     {isLogin ? 'Sign In' : 'Create Account'}
