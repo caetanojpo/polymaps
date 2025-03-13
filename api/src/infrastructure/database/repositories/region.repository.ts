@@ -56,7 +56,7 @@ export class RegionRepository implements IRegionRepository {
                 "location": {
                     $geoIntersects: {$geometry: point}
                 }
-            }).exec();
+            }).populate('owner').exec();
             return regions.map((region) => RegionMapper.toDomainFromSchema(region));
         } catch (error) {
             throw new DatabaseException(
@@ -85,7 +85,7 @@ export class RegionRepository implements IRegionRepository {
                 query.owner = ownerId;
             }
 
-            const regions = await this.collection.find(query).exec();
+            const regions = await this.collection.find(query).populate('owner').exec();
 
             return regions.map((region) => RegionMapper.toDomainFromSchema(region));
         } catch (error) {
