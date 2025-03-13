@@ -173,7 +173,9 @@ describe('RegionRepository', () => {
         const coordinates = {latitude: -122.431297, longitude: 37.773972};
 
         jest.spyOn(RegionModel, 'find').mockReturnValueOnce({
-            exec: jest.fn().mockResolvedValue([])
+            populate: jest.fn().mockReturnValue({
+                exec: jest.fn().mockResolvedValue([])
+            })
         } as any);
 
         const result = await repository.findRegionsContainingPoint(coordinates);
@@ -185,7 +187,9 @@ describe('RegionRepository', () => {
         const coordinates = {latitude: -122.431297, longitude: 37.773972};
 
         jest.spyOn(RegionModel, 'find').mockReturnValueOnce({
-            exec: jest.fn().mockResolvedValue([])
+            populate: jest.fn().mockReturnValue({
+                exec: jest.fn().mockResolvedValue([])
+            })
         } as any);
 
         const result = await repository.findRegionsNearPoint(coordinates, 1000);

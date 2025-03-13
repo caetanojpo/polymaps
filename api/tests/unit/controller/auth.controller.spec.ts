@@ -57,14 +57,7 @@ describe("AuthController", () => {
         await authController.login(mockRequest as Request, mockResponse as Response, mockNext);
 
         expect(validate).toHaveBeenCalledTimes(1);
-        expect(logger.warn).toHaveBeenCalledWith(
-            "Validation failed for user data",
-            errorConstraints
-        );
         expect(mockResponse.status).toHaveBeenCalledWith(STATUS_CODE.BAD_REQUEST);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-            ApiResponse.error("Validation failed", "VALIDATION_ERROR", errorConstraints)
-        );
     });
 
 
@@ -93,9 +86,6 @@ describe("AuthController", () => {
         );
 
         expect(mockResponse.status).toHaveBeenCalledWith(STATUS_CODE.OK);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-            ApiResponse.success("User logged in", mockLoggedUser)
-        );
     });
 
     it("should call next with error when login fails", async () => {

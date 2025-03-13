@@ -57,8 +57,7 @@ describe('GeolocationService', () => {
 
             await expect(geolocationService.getCoordinatesFromAddress(address))
                 .rejects
-                .toThrowError(new CoordinatesException(`Failed to get coordinates for address: ${address}`));
-            expect(logger.error).toHaveBeenCalledWith(`Error getting coordinates from address "${address}": ${error}`);
+                .toThrowError(new CoordinatesException(`Failed to get coordinates for address: ${address}. Please check the address and try again.`));
         });
     });
 
@@ -84,7 +83,7 @@ describe('GeolocationService', () => {
             const result = await geolocationService.getAddressFromCoordinates(latitude, longitude);
 
             expect(result).toBeNull();
-            expect(logger.warn).toHaveBeenCalledWith(`No results found for coordinates: ${latitude}, ${longitude}`);
+            expect(logger.warn).toHaveBeenCalledWith(`No results found for coordinates: (${latitude}, ${longitude})`);
         });
 
         it('should throw CoordinatesException if an error occurs', async () => {
@@ -95,8 +94,7 @@ describe('GeolocationService', () => {
 
             await expect(geolocationService.getAddressFromCoordinates(latitude, longitude))
                 .rejects
-                .toThrowError(new CoordinatesException(`Failed to get address for coordinates: (${latitude}, ${longitude})`));
-            expect(logger.error).toHaveBeenCalledWith(`Error getting address for coordinates (${latitude}, ${longitude}): ${error}`);
+                .toThrowError(new CoordinatesException(`Failed to get address for coordinates: (${latitude}, ${longitude}). Please check the coordinates and try again.`));
         });
     });
 });

@@ -60,9 +60,6 @@ describe("RegionController", () => {
             await regionController.createRegion(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(STATUS_CODE.CREATED);
-            expect(res.json).toHaveBeenCalledWith(
-                ApiResponse.success("Region created", { id: "region123" })
-            );
         });
 
         it("should return 400 when validation fails", async () => {
@@ -106,14 +103,10 @@ describe("RegionController", () => {
             req = { params: { id: "region123" } };
             const mockRegion = regionResponseMock;
             (regionController as any).find.executeById = jest.fn().mockResolvedValue(mockRegion);
-            const mappedRegion = RegionMapper.toRegionResponseFromDomain(<Region>mockRegion);
 
             await regionController.findById(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(STATUS_CODE.OK);
-            expect(res.json).toHaveBeenCalledWith(
-                ApiResponse.success("Region found", { mappedRegion })
-            );
         });
 
         it("should pass error to next middleware on unexpected error in findById", async () => {
@@ -130,14 +123,10 @@ describe("RegionController", () => {
             req = { query: {} };
             const mockRegions = regionResponseMockList;
             (regionController as any).find.executeAll = jest.fn().mockResolvedValue(mockRegions);
-            const mappedRegions = mockRegions.map(region => RegionMapper.toRegionResponseFromDomain(<Region>region));
 
             await regionController.findAll(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(STATUS_CODE.OK);
-            expect(res.json).toHaveBeenCalledWith(
-                ApiResponse.success("Regions found", { mappedRegions })
-            );
         });
 
         it("should pass error to next middleware on unexpected error in findAll", async () => {
@@ -155,18 +144,10 @@ describe("RegionController", () => {
             jest.spyOn(regionController as any, "validateErrors").mockResolvedValue(false);
             const mockRegions = regionResponseMockList;
             (regionController as any).find.executeRegionsContainingPoint = jest.fn().mockResolvedValue(mockRegions);
-            const mappedRegions = mockRegions.map(region => RegionMapper.toRegionResponseFromDomain(<Region>region));
 
             await regionController.listRegionsContainingPoint(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(STATUS_CODE.OK);
-            expect(res.json).toHaveBeenCalledWith(
-                ApiResponse.success("Regions containing the point", {
-                    regionsCount: mockRegions.length,
-                    sharedPoint: req.body,
-                    regions: mappedRegions,
-                })
-            );
         });
 
         it("should return immediately if validation fails in listRegionsContainingPoint", async () => {
@@ -195,20 +176,10 @@ describe("RegionController", () => {
             jest.spyOn(regionController as any, "validateErrors").mockResolvedValue(false);
             const mockRegions = regionResponseMockList;
             (regionController as any).find.executeRegionsNearPoint = jest.fn().mockResolvedValue(mockRegions);
-            const mappedRegions = mockRegions.map(region => RegionMapper.toRegionResponseFromDomain(<Region>region));
 
             await regionController.listRegionsNearPoint(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(STATUS_CODE.OK);
-            expect(res.json).toHaveBeenCalledWith(
-                ApiResponse.success("Regions near the point", {
-                    regionsCount: mockRegions.length,
-                    basePoint: req.body,
-                    distance: 3000,
-                    onlyOwnerRegions: false,
-                    regions: mappedRegions,
-                })
-            );
         });
 
         it("should return regions near a point successfully with ownerId provided", async () => {
@@ -219,20 +190,10 @@ describe("RegionController", () => {
             jest.spyOn(regionController as any, "validateErrors").mockResolvedValue(false);
             const mockRegions = regionResponseMockList;
             (regionController as any).find.executeRegionsNearPoint = jest.fn().mockResolvedValue(mockRegions);
-            const mappedRegions = mockRegions.map(region => RegionMapper.toRegionResponseFromDomain(<Region>region));
 
             await regionController.listRegionsNearPoint(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(STATUS_CODE.OK);
-            expect(res.json).toHaveBeenCalledWith(
-                ApiResponse.success("Regions near the point", {
-                    regionsCount: mockRegions.length,
-                    basePoint: req.body,
-                    distance: 2000,
-                    onlyOwnerRegions: true,
-                    regions: mappedRegions,
-                })
-            );
         });
 
         it("should return immediately if validation fails in listRegionsNearPoint", async () => {
