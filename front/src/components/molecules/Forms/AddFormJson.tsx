@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Card } from '@/components/atoms/Card/Card';
-import { Button } from '@/components/atoms/Buttons/Button';
-import { AlertCircle } from 'lucide-react';
+import React, {useState} from 'react';
+import {Card} from '@/components/atoms/Card/Card';
+import {Button} from '@/components/atoms/Buttons/Button';
+import {AlertCircle} from 'lucide-react';
 import Editor from "@monaco-editor/react";
 
 interface AddRegionJsonFormProps {
@@ -20,7 +20,7 @@ const defaultJson = JSON.stringify({
     ]
 }, null, 2);
 
-export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
+export function AddRegionJsonForm({onSubmit}: AddRegionJsonFormProps) {
     const [jsonValue, setJsonValue] = useState(defaultJson);
     const [error, setError] = useState<string | null>(null);
 
@@ -64,7 +64,7 @@ export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
 
             const formattedCoordinates = data.coordinates[0]
                 .slice(0, 3)
-                .map(([longitude, latitude]: number[]) => ({
+                .map(([latitude, longitude]: number[]) => ({
                     latitude,
                     longitude
                 }));
@@ -101,7 +101,7 @@ export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
                         value={jsonValue}
                         onChange={(value) => setJsonValue(value || '')}
                         options={{
-                            minimap: { enabled: false },
+                            minimap: {enabled: false},
                             lineNumbers: 'on',
                             scrollBeyondLastLine: false,
                             wordWrap: 'on',
@@ -126,7 +126,7 @@ export function AddRegionJsonForm({ onSubmit }: AddRegionJsonFormProps) {
 
                 {error && (
                     <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-md">
-                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                        <AlertCircle className="w-5 h-5 flex-shrink-0"/>
                         <p className="text-[1.2rem]">{error}</p>
                     </div>
                 )}

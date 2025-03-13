@@ -6,11 +6,12 @@ import {AddRegionForm} from '@/components/molecules/Forms/AddForm';
 import {Region} from '@/types';
 import {AddRegionJsonForm} from "@/components/molecules/Forms/AddFormJson";
 import {RegionList} from "@/components/molecules/List/RegionList";
+import {SearchParams} from "@/types/searchParams";
 
 interface DashboardTemplateProps {
     regions: Region[];
     search: Region[];
-    onSearch: (type: 'contains' | 'near', coordinates: { latitude: number; longitude: number }) => Promise<void>;
+    onSearch: (params: SearchParams) => Promise<void>;
     onAddRegion: (name: string, coordinates: { latitude: number; longitude: number }[]) => Promise<void>;
 }
 

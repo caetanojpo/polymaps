@@ -62,9 +62,9 @@ export function AddRegionForm({onSubmit}: AddRegionFormProps) {
 
             setName('');
             setCoordinates([
-                {latitude: 37.773972, longitude: -122.431297},
-                {latitude: 37.773975, longitude: -122.431300},
-                {latitude: 37.773980, longitude: -122.431305}
+                {latitude: 0, longitude: 0},
+                {latitude: 0, longitude: 0},
+                {latitude: 0, longitude: 0}
             ]);
             setError(null);
         } catch (err) {
@@ -153,9 +153,9 @@ export function AddRegionForm({onSubmit}: AddRegionFormProps) {
                         onClick={() => {
                             setName('');
                             setCoordinates([
-                                { latitude: 37.773972, longitude: -122.431297 },
-                                { latitude: 37.773975, longitude: -122.431300 },
-                                { latitude: 37.773980, longitude: -122.431305 }
+                                {latitude: 0, longitude: 0},
+                                {latitude: 0, longitude: 0},
+                                {latitude: 0, longitude: 0}
                             ]);
                             setError(null);
                         }}

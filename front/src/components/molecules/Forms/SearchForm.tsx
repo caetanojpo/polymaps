@@ -5,15 +5,18 @@ import {Card} from '@/components/atoms/Card/Card';
 import {Field} from '@/components/atoms/Fields/Field';
 import {Button} from '@/components/atoms/Buttons/Button';
 import {Region} from '@/types';
+import {SearchParams} from "@/types/searchParams";
 
 interface SearchFormProps {
-    onSearch: (type: 'contains' | 'near', coordinates: { latitude: number; longitude: number }) => Promise<void>;
+    onSearch: (params: SearchParams) => Promise<void>;
     search: Region[];
 }
 
 export function SearchForm({onSearch, search}: SearchFormProps) {
     const [searchType, setSearchType] = useState<'contains' | 'near'>('contains');
     const [coordinates, setCoordinates] = useState({latitude: 0, longitude: 0});
+    const [maxDistance, setMaxDistance] = useState<number>(10000000);
+    const [fromOwner, setFromOwner] = useState<boolean>(false);
 
     return (
         <Card>
@@ -56,10 +59,49 @@ export function SearchForm({onSearch, search}: SearchFormProps) {
                     value={coordinates.longitude}
                     onChange={(e) => setCoordinates({...coordinates, longitude: parseFloat(e.target.value)})}
                 />
+
+                {searchType === 'near' && (
+                    <>
+                        <Field
+                            label="Max Distance (meters)"
+                            type="number"
+                            step="any"
+                            value={maxDistance}
+                            min="0"
+                            onChange={(e) => setMaxDistance(parseFloat(e.target.value))}
+                        />
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={fromOwner}
+                                onChange={(e) => setFromOwner(e.target.checked)}
+                                className="h-6 w-6 r"
+                                id="fromOwnerCheckbox"
+                            />
+                            <label htmlFor="fromOwnerCheckbox" className="text-[1.2rem] cursor-pointer">
+                                From Owner
+                            </label>
+                        </div>
+                    </>
+                )}
+
                 <Button
                     variant="primary"
                     icon={Search}
-                    onClick={() => onSearch(searchType, coordinates)}
+                    onClick={() => {
+                        if (searchType === 'near') {
+                            onSearch({
+                                type: 'near',
+                                coordinates,
+                                options: {maxDistance, fromOwner}
+                            });
+                        } else {
+                            onSearch({
+                                type: 'contains',
+                                coordinates
+                            });
+                        }
+                    }}
                     className="w-full"
                 >
                     Search {searchType === 'contains' ? 'Containing' : 'Near'} Point
@@ -68,10 +110,8 @@ export function SearchForm({onSearch, search}: SearchFormProps) {
 
             {search.length > 0 && (<>
                     <h3 className="mt-6 text-[1.4rem] font-semibold mb-3">Search Results</h3>
-
-                    <div className=" max-h-[290px] overflow-y-scroll">
-
-                        <div className="space-y-2 ">
+                    <div className="max-h-[290px] overflow-y-scroll">
+                        <div className="space-y-2">
                             {search.map((region) => (
                                 <div
                                     key={region._id}
