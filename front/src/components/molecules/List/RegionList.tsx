@@ -30,7 +30,7 @@ export function RegionList({ regions }: RegionListProps) {
                                         <ul className="text-[1.2rem] text-gray-700 space-y-1">
                                             {polygon.map((point, pIndex) => (
                                                 <li key={pIndex} className="bg-gray-200 rounded px-2 py-1 inline-block">
-                                                    📍 {point[1].toFixed(6)}, {point[0].toFixed(6)}
+                                                    📍 {point[0].toFixed(6)}, {point[1].toFixed(6)}
                                                 </li>
                                             ))}
                                         </ul>
