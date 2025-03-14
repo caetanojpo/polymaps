@@ -1,0 +1,36 @@
+{
+  "user": {
+    "created": "User has been successfully created.",
+    "not_found": "The specified user could not be found.",
+    "found": "User was successfully found.",
+    "updated": "User information has been updated successfully.",
+    "deleted": "User has been successfully deleted."
+  },
+  "users": {
+    "found": "Users retrieved successfully."
+  },
+  "validation": {
+    "failed": "Validation failed. Please ensure the provided data is correct."
+  },
+  "region": {
+    "created": "Region has been successfully created.",
+    "found": "Region found successfully.",
+    "updated": "Region information has been updated successfully.",
+    "deleted": "Region has been successfully deleted."
+  },
+  "regions": {
+    "found": "Regions retrieved successfully.",
+    "containing_point": "Regions that contain the specified point.",
+    "near_point": "Regions within the specified distance from the point."
+  },
+  "auth": {
+    "logged": "User logged in successfully."
+  },
+  "errors": {
+    "location": "Failed to validate the location data.",
+    "user": "An error occurred while processing the user data.",
+    "entity": "The requested entity was not found.",
+    "database": "An error occurred with the database operation.",
+    "coordinates": "There was an issue with the provided coordinates."
+  }
+}
