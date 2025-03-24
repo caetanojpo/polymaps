@@ -1,0 +1,36 @@
+{
+  "user": {
+    "created": "Usuário criado com sucesso.",
+    "not_found": "O usuário especificado não pôde ser encontrado.",
+    "found": "Usuário encontrado com sucesso.",
+    "updated": "As informações do usuário foram atualizadas com sucesso.",
+    "deleted": "Usuário excluído com sucesso."
+  },
+  "users": {
+    "found": "Usuários recuperados com sucesso."
+  },
+  "validation": {
+    "failed": "Falha na validação. Por favor, verifique se os dados fornecidos estão corretos."
+  },
+  "region": {
+    "created": "Região criada com sucesso.",
+    "found": "Região encontrada com sucesso.",
+    "updated": "As informações da região foram atualizadas com sucesso.",
+    "deleted": "Região excluída com sucesso."
+  },
+  "regions": {
+    "found": "Regiões recuperadas com sucesso.",
+    "containing_point": "Regiões que contêm o ponto especificado.",
+    "near_point": "Regiões dentro da distância especificada do ponto."
+  },
+  "auth": {
+    "logged": "Usuário logado com sucesso."
+  },
+  "errors": {
+    "location": "Falha ao validar os dados de localização.",
+    "user": "Ocorreu um erro ao processar os dados do usuário.",
+    "entity": "A entidade solicitada não foi encontrada.",
+    "database": "Ocorreu um erro na operação do banco de dados.",
+    "coordinates": "Houve um problema com as coordenadas fornecidas."
+  }
+}

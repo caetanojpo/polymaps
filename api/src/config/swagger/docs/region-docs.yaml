@@ -1,0 +1,531 @@
+tags:
+  - name: Regions
+    description: "Endpoints for region management and spatial queries."
+paths:
+  /regions:
+    post:
+      tags:
+        - Regions
+      summary: Create a New Region
+      description: "Create a new region with a name, spatial coordinates, and an owner."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+      requestBody:
+        description: "Region object that needs to be created."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRegionDto'
+      responses:
+        '201':
+          description: "Region created successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegionCreated'
+        '400':
+          description: "Validation error."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Regions
+      summary: Retrieve All Regions
+      description: "Get a list of all regions. Optionally filter by owner."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+        - name: ownerId
+          in: query
+          description: "Filter regions by the owner's ID."
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Regions retrieved successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegionList'
+        '400':
+          description: "Error retrieving regions."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /regions/{id}:
+    get:
+      tags:
+        - Regions
+      summary: Retrieve a Region by ID
+      description: "Get a region's details by its unique identifier."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+        - name: id
+          in: path
+          description: "The unique identifier of the region."
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Region retrieved successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegion'
+        '404':
+          description: "Region not found."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Regions
+      summary: Update a Region
+      description: "Update an existing region's details."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+        - name: id
+          in: path
+          description: "The unique identifier of the region to update."
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: "Updated region object."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRegionDto'
+      responses:
+        '204':
+          description: "Region updated successfully (no content)."
+        '400':
+          description: "Validation error."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Regions
+      summary: Delete a Region
+      description: "Delete a region by its unique identifier. Use the query parameter `hardDelete=true` for a hard delete."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+        - name: id
+          in: path
+          description: "The unique identifier of the region to delete."
+          required: true
+          schema:
+            type: string
+        - name: hardDelete
+          in: query
+          description: "Set to true for a hard delete."
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '204':
+          description: "Region deleted successfully (no content)."
+        '404':
+          description: "Region not found."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /regions/containing-point:
+    post:
+      tags:
+        - Regions
+      summary: List Regions Containing a Point
+      description: "Retrieve regions that contain a specific geographic point."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+      requestBody:
+        description: "Coordinates for the point to check."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRegionsContainingPointDto'
+      responses:
+        '200':
+          description: "Regions containing the point retrieved successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegionsContainingPoint'
+        '400':
+          description: "Validation error."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /regions/near:
+    post:
+      tags:
+        - Regions
+      summary: List Regions Near a Point
+      description: "Retrieve regions near a specific geographic point. Optionally filter by owner and maximum distance."
+      parameters:
+        - name: language
+          in: query
+          description: "Specify the language for the response (default: 'en')."
+          required: false
+          schema:
+            type: string
+            default: "en"
+        - name: maxDistance
+          in: query
+          description: "Maximum distance (in meters) to search for nearby regions."
+          required: false
+          schema:
+            type: number
+            default: "5000"
+        - name: ownerId
+          in: query
+          description: "Filter regions by the owner's ID."
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: "Coordinates for the reference point."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRegionsNearPointDTO'
+      responses:
+        '200':
+          description: "Regions near the point retrieved successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseRegionsNearPoint'
+        '400':
+          description: "Validation error."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    # Schema for a simple coordinate pair.
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          description: "Latitude of the location."
+          example: 40.7128
+        longitude:
+          type: number
+          description: "Longitude of the location."
+          example: -74.0060
+    # Schema for UserResponseDTO.
+    UserResponseDTO:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: "Unique identifier of the user."
+          example: "603d2149f1c2ae3a9876f3c8"
+        name:
+          type: string
+          description: "Full name of the user."
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          description: "User's email address."
+          example: "john@example.com"
+        address:
+          type: string
+          description: "User's address."
+          example: "123 Main St"
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+    # A LinearRing is an array of numbers (coordinate pairs).
+    LinearRing:
+      type: array
+      description: "An array of numbers representing a coordinate pair (e.g., [longitude, latitude])."
+      items:
+        type: number
+    # Schema for a Polygon model representing region boundaries.
+    PolygonModel:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [ "Polygon" ]
+          description: "The geometry type."
+          example: "Polygon"
+        coordinates:
+          type: array
+          description: "An array of linear rings defining the polygon."
+          items:
+            $ref: '#/components/schemas/LinearRing'
+    CreateRegionDto:
+      type: object
+      required:
+        - name
+        - coordinates
+        - owner
+      properties:
+        name:
+          type: string
+          description: "Name of the region."
+          example: "Springfield Park"
+        coordinates:
+          type: array
+          description: "An array of linear rings representing the region's boundaries."
+          items:
+            $ref: '#/components/schemas/LinearRing'
+          example: "[[[-122.431297,37.773972],[-122.431300,37.773975],[-122.431305,37.773980],[-122.431297,37.773972]]]"
+        owner:
+          type: string
+          description: "Owner's user ID."
+          example: "603d2149f1c2ae3a9876f3c8"
+    UpdateRegionDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Updated name of the region."
+          example: "Updated Central Park"
+        coordinates:
+          type: array
+          description: "Updated array of linear rings representing the region's boundaries."
+          items:
+            $ref: '#/components/schemas/LinearRing'
+        ownerId:
+          type: string
+          description: "Updated owner's user ID."
+          example: "603d2149f1c2ae3a9876f3c8"
+    ListRegionsContainingPointDto:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          description: "Latitude of the point."
+          example: 40.7128
+        longitude:
+          type: number
+          description: "Longitude of the point."
+          example: -74.0060
+    ListRegionsNearPointDTO:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          description: "Latitude of the reference point."
+          example: 40.7128
+        longitude:
+          type: number
+          description: "Longitude of the reference point."
+          example: -74.0060
+    RegionResponseDTO:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: "Unique identifier of the region."
+          example: "603d2149f1c2ae3a9876f3c8"
+        name:
+          type: string
+          description: "Name of the region."
+          example: "Central Park"
+        location:
+          allOf:
+            - $ref: '#/components/schemas/PolygonModel'
+          description: "Polygon representation of the region's boundaries."
+        owner:
+          allOf:
+            - $ref: '#/components/schemas/UserResponseDTO'
+          description: "Owner information."
+        isActive:
+          type: boolean
+          description: "Indicates if the region is active."
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: "Creation timestamp."
+          example: "2023-03-11T10:20:30Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: "Last update timestamp."
+          example: "2023-03-11T10:20:30Z"
+    ApiResponseRegion:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates whether the operation was successful."
+          example: true
+        message:
+          type: string
+          description: "A descriptive message about the operation."
+          example: "Region found"
+        data:
+          type: object
+          properties:
+            mappedRegion:
+              $ref: '#/components/schemas/RegionResponseDTO'
+    ApiResponseRegionList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates whether the operation was successful."
+          example: true
+        message:
+          type: string
+          description: "A descriptive message about the operation."
+          example: "Regions retrieved successfully"
+        data:
+          type: object
+          properties:
+            mappedRegions:
+              type: array
+              items:
+                $ref: '#/components/schemas/RegionResponseDTO'
+    ApiResponseRegionCreated:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates whether the region was created successfully."
+          example: true
+        message:
+          type: string
+          description: "A descriptive message."
+          example: "Region created"
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Unique identifier of the newly created region."
+              example: "603d2149f1c2ae3a9876f3c8"
+    ApiResponseRegionsContainingPoint:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates if the operation was successful."
+          example: true
+        message:
+          type: string
+          description: "A descriptive message."
+          example: "Regions containing the point retrieved successfully"
+        data:
+          type: object
+          properties:
+            regionsCount:
+              type: number
+              description: "The number of regions containing the point."
+              example: 3
+            sharedPoint:
+              $ref: '#/components/schemas/ListRegionsContainingPointDto'
+            regions:
+              type: array
+              items:
+                $ref: '#/components/schemas/RegionResponseDTO'
+    ApiResponseRegionsNearPoint:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates if the operation was successful."
+          example: true
+        message:
+          type: string
+          description: "A descriptive message."
+          example: "Regions near the point retrieved successfully"
+        data:
+          type: object
+          properties:
+            regionsCount:
+              type: number
+              description: "The number of regions found near the point."
+              example: 5
+            basePoint:
+              $ref: '#/components/schemas/ListRegionsNearPointDTO'
+            distance:
+              type: number
+              description: "The maximum distance used for the search."
+              example: 5000
+            onlyOwnerRegions:
+              type: boolean
+              description: "Indicates whether the search was filtered by owner."
+              example: true
+            regions:
+              type: array
+              items:
+                $ref: '#/components/schemas/RegionResponseDTO'
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: "Indicates that the request has failed."
+          example: false
+        message:
+          type: string
+          description: "A descriptive error message."
+          example: "Validation error"
+        error:
+          type: string
+          description: "Specific error code."
+          example: "VALIDATION_ERROR"
